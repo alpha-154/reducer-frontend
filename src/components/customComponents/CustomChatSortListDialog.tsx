@@ -34,7 +34,7 @@ interface CustomDialogProps {
   currentUserUserName: string;
 }
 
-const CustomDialogList = ({
+const CustomChatSortListDialog = ({
   triggerButtonText,
   isMessagePlus,
   isPen,
@@ -177,4 +177,4 @@ const CustomDialogList = ({
   );
 };
 
-export default CustomDialogList;
+export default CustomChatSortListDialog;

@@ -88,7 +88,7 @@ const UserSearchList: React.FC<ListProps> = ({
                 <button
                   onClick={handleMessageRequest}
                   disabled={isMessageRequestSent}
-                  className={`p-1 px-2 md:px-4 md:p-2 flex justify-center items-center border  ${isMessageRequestSent ? "bg-gray-400" : "bg-colors-custom-orange"}  rounded-xl text-white`}
+                  className={`p-1 px-2 md:px-4 md:p-2 flex justify-center items-center border ${isMessageRequestSent ? "border-gray-400" : "border-colors-custom-orange"} ${isMessageRequestSent ? "bg-gray-400" : "bg-colors-custom-orange"}  rounded-xl text-white`}
                 >
                   {isMessageRequestSent ? "Request Sent" : "Send Request"}
                 </button>

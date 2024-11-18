@@ -7,7 +7,7 @@ import ToggleHeader from "./_components/ToggleHeader";
 import UserCard from "./_components/UserCard";
 import { BellDot } from "lucide-react";
 import Link from "next/link";
-import CustomDialogList from "@/components/customComponents/CustomDialogList";
+import CustomChatSortListDialog from "@/components/customComponents/CustomChatSortListDialog";
 import CustomSheet from "@/components/customComponents/CustomSheet";
 import debounce from "lodash.debounce";
 import { fetchConnectedUsersWithData, searchUser } from "@/api";
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "@/slices/userSlice";
 import { AppDispatch, RootState } from "@/lib/store";
 import { toast } from "sonner";
+import CustomSkeleton from "@/components/customComponents/CustomSkeleton";
 
 interface SearchUser {
   userName: string;
@@ -28,7 +29,7 @@ interface members {
   userName: string;
   profileImage: string;
   lastMessage: string;
-  lastMessageTime: string;
+  lastMessageTime: Date;
   privateMessageId: string;
 }
 interface ConnectedUserData {
@@ -99,6 +100,9 @@ const Chat = () => {
   const [fetchConnectedUsersLoading, setFetchConnectedUsersLoading] =
     useState<boolean>(false);
 
+
+  
+
   useEffect(() => {
     const fetchConnectedUsers = async () => {
       try {
@@ -120,12 +124,16 @@ const Chat = () => {
     }
   }, [currentUserUserName]);
 
+
+  // >>>>>>>>>>>> Extracting all the existing chat sort list names >>>>>>>>> //
+  const chatSortListNames = connectedUsers.map((list) => list.listName);
+
   
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center gap-5 md:gap-7 border border-colors-custom-orange rounded-xl py-4 max-sm:px-2">
+    <div className="min-h-screen w-full flex flex-col items-center gap-5 md:gap-7 border border-colors-custom-orange rounded-xl py-8 md:py-10 max-sm:px-2">
       {/* Header portion */}
-      <h1 className="text-3xl">Private Message</h1>
+      <h1 className="text-3xl md:text-4xl text-colors-custom-orange">Private Message</h1>
       {/* User search section */}
 
       <div className="flex flex-col gap-1">
@@ -162,11 +170,12 @@ const Chat = () => {
                         isFriend={user.isFriend}
                         isMessageRequestSent={user.isMessageRequestSent}
                         currentUserUserName={currentUserUserName}
+
                       />
                     ))}
                   </>
                 ) : (
-                  searchClicked && <p>No users found</p>
+                  query.length !== 0 && searchFindUsers.length === 0 && <p>No users found</p>
                 ) // Show "No users found" only if search button is clicked
               }
             </>
@@ -179,10 +188,13 @@ const Chat = () => {
         {/* Users list */}
         <div className="flex flex-col min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center gap-4 mt-10 md:mt-15">
           {fetchConnectedUsersLoading ? (
-            <p className="text-2xl">Loading...</p>
+            <CustomSkeleton 
+            numOfTimes={4} 
+            isChatSkeleton={false}
+            />
           ) : (
             connectedUsers.map((user, index) => (
-              <ToggleHeader key={index} title={user.listName}  currentUserUserName={currentUserUserName}>
+              <ToggleHeader key={index} title={user.listName}  currentUserUserName={currentUserUserName} >
                 {user.members.map((member, index) => (
                   <UserCard
                     key={index}
@@ -191,7 +203,9 @@ const Chat = () => {
                     lastText={member.lastMessage}
                     date={member.lastMessageTime}
                     privateMessageId={member.privateMessageId}
-                   
+                  
+                   chatSortListNames={chatSortListNames}
+                   currentUserUserName={currentUserUserName}
                   />
                 ))}
               </ToggleHeader>
@@ -201,7 +215,7 @@ const Chat = () => {
         {/* Footer */}
         <div className=" bg-colors-custom-orange-thin mx-auto flex justify-between  min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center mt-5 p-3 rounded-xl">
           <div>
-            <CustomDialogList
+            <CustomChatSortListDialog
               triggerButtonText="Add a list"
               dialogTitleText="Create a list"
               isMessagePlus={true}

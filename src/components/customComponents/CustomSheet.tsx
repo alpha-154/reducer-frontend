@@ -13,7 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Settings } from "lucide-react";
-import { CustomDropDown } from "./CustomDropDown";
+import { CustomSheetDropDown } from "./CustomSheetDropDown";
 
 const CustomSheet = () => {
   return (
@@ -53,7 +53,7 @@ const CustomSheet = () => {
             </SheetClose>
           </div>
           <div className="">
-            <CustomDropDown />
+            <CustomSheetDropDown />
           </div>
         </div>
         <SheetFooter></SheetFooter>

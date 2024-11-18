@@ -10,7 +10,7 @@ const apiClient = axios.create({
 
 // API functions for different actions
 
-// ************************** Chat APIs ************************** //
+// ************************** Chat APIs Starts ************************** //
 
 const registerUser = (registrationData: {
   userName: string;
@@ -137,6 +137,19 @@ const sendPrivateMessage = ({
   );
 }
 
+
+// >>>>>>>>>>>>   Sending Voice Message    >>>>>>>>>>>> //
+const sendVoiceMessage = ({ formData } : { formData: FormData }) => {
+  return apiClient.post(
+    "/api/user/send-voice-message",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
+}
+
+
 // >>>>>>>>>>>>>> handling users sorting list component >>>>>>>>//
 
 const createSortList = ({currentUserUserName, listName} : { currentUserUserName: string; listName: string}) => {
@@ -163,6 +176,108 @@ const deleteSortList = ({currentUserUserName, deleteListName} : { currentUserUse
   })
 }
 
+
+// >>>>>>>>>>>>>>> End Connection with a Connected User >>>>>>>>>>>>>> //
+const endConnectionWithAnUser = ({currentUserUserName, unfriendUserUserName } : { currentUserUserName: string; unfriendUserUserName : string }) => {
+  return apiClient.delete("/api/user/end-connection", {
+    params: {
+      currentUserUserName,
+      unfriendUserUserName
+    }
+  })
+}
+
+// >>>>>>>>>>>>> Adding a User to Chat Sort List >>>>>>>>>>>>>> //
+const addToChatSortList = ({currentUserUserName, addedUserUserName, listName} : { currentUserUserName: string; addedUserUserName: string; listName: string }) => {
+   return apiClient.post("/api/user/add-user-to-chat-sort-list", {
+     currentUserUserName,
+     addedUserUserName,
+     listName
+   })
+}
+
+
+
+// >>>>>>>>>>>        Chat APIs Ends      >>>>>>>>>>>>>>>>>> ///
+
+
+
+
+//   >>>>>>>>>>>>>>>>  Notification APIs Starts >>>>>>>>>>>>>>> //
+
+
+// >>>>>>>>>>>>> Fetching All Notifications >>>>>>>>>>>>>> //
+
+const fetchUserNotifications = (username: string) => {
+    return apiClient.get(
+      `/api/notification/get-user-notifications/${username}`
+    );
+}
+
+const acceptMessageRequest = ({currentUserUserName, requestedUserUserName}:
+  {
+    currentUserUserName: string;
+    requestedUserUserName: string;
+  }
+) => {
+   return apiClient.post(
+    "/api/user/accept-message-request",
+    {
+      currentUserUserName,
+      requestedUserUserName,
+    }
+  );
+}
+
+const rejectMessageRequest = ({currentUserUserName, requestedUserUserName}:
+  {
+    currentUserUserName: string;
+    requestedUserUserName: string;
+  }
+) => {
+    return apiClient.post(
+      "/api/user/decline-private-message-request",
+      {
+        currentUserUserName,
+        requestedUserUserName,
+      }
+    );
+}
+
+const acceptGroupJoinReqeust = ({ requestedUserUserName, groupName}:
+  {
+    requestedUserUserName: string;
+    groupName: string;
+  }
+) => {
+  return apiClient.post(
+    "/api/group//accept-group-join-request",
+    {
+      requestedUserUserName,
+      groupName,
+    }
+  );
+}
+
+const declineGroupJoinReqeust = ({ requestedUserUserName, groupName}:
+  {
+    requestedUserUserName: string;
+    groupName: string;
+  }
+) => {
+  return apiClient.post(
+    "/api/group/decline-group-join-request",
+    {
+      requestedUserUserName,
+      groupName,
+    }
+  );
+}
+
+
+//   >>>>>>>>>>>>>>>>  Notification APIs Ends >>>>>>>>>>>>>>> //
+
+
 export {
   registerUser,
   checkUsername,
@@ -173,7 +288,15 @@ export {
   fetchConnectedUsersWithData,
   fetchPreviousMessagesofAPrivateChat,
   sendPrivateMessage,
+  sendVoiceMessage,
   createSortList,
   updateSortList,
-  deleteSortList
+  deleteSortList,
+  endConnectionWithAnUser,
+  addToChatSortList,
+  fetchUserNotifications,
+  acceptMessageRequest,
+  rejectMessageRequest,
+  acceptGroupJoinReqeust,
+  declineGroupJoinReqeust
 };

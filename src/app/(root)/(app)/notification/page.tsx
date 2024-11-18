@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '@/slices/userSlice';
 import { AppDispatch, RootState } from '@/lib/store';
-import axios from 'axios';
 import Notification from './_components/NotificationList';
+import { fetchUserNotifications } from '@/api';
 
 
 // Notification types
@@ -52,9 +52,7 @@ interface NotificationBase {
       const fetchNotifications = async () => {
         console.log("username", username);
         try {
-          const response = await axios.get(
-            `http://localhost:8000/api/notification/get-user-notifications/${username}`
-          );
+          const response = await fetchUserNotifications(username);
           console.log("notifications", response.data.notifications);
           if (response.status === 200) {
             setNotifications(response.data.notifications);
@@ -85,18 +83,12 @@ interface NotificationBase {
       }
     };
 
-    // const handleDeleteNotification = (type: string, index: number) => {
-    //   setNotifications(prevNotifications => ({
-    //     ...prevNotifications,
-    //     [type]: prevNotifications[type].filter((_: any, i: any) => i !== index),
-    //   }));
-    // };
-  
+   
   
     return (
-      <div className='min-h-screen mx-auto p-4'>
-        <h1 className='text-center text-3xl text-red-500'>{username} notifications</h1>
-        <div className='mt-10 flex flex-col gap-5 justify-start'>
+      <div className='container-max border border-colors-custom-orange rounded-xl px-6 py-8 md:py-10'>
+        <h1 className='text-center text-3xl md:text-4xl text-colors-custom-orange'>Notifications</h1>
+        <div className='max-w-3xl mt-10 flex flex-col gap-5 mx-auto '>
           {Object.entries(notifications).flatMap(([type, notifArray]) =>
             // Check if array is not empty before rendering notifications
             notifArray.length > 0 ? (
@@ -105,7 +97,7 @@ interface NotificationBase {
                   key={`${type}-${index}`}
                   currentUser={username}
                   name={notification.name}
-                  image={notification.image}
+                  profileImage={notification.image}
                   date={notification.date}
                   groupName={(notification as GroupNotification).groupName}
                   message={getMessage(type, notification.name, (notification as GroupNotification).groupName)}
