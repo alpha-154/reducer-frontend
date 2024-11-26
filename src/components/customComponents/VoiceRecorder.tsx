@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
 import dayjs from "dayjs";
-import { Message } from "@/app/(root)/(app)/chat/_components/Drawer";
+import { Message } from "@/app/(root)/chat/_components/Drawer";
 import WaveSurfer from "wavesurfer.js";
 import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
@@ -23,7 +23,7 @@ interface VoiceRecorderProps {
   currentUserUserName: string;
   currentUserProfileImage: string;
   chatWithUserUserName: string;
-  socket: Socket | null;
+  socketInstance: Socket | null; 
   previousMessages: { [date: string]: Message[] };
   setPreviousMessages: React.Dispatch<
     React.SetStateAction<{ [date: string]: Message[] }>
@@ -35,7 +35,7 @@ export default function VoiceRecorder({
   currentUserUserName,
   currentUserProfileImage,
   chatWithUserUserName,
-  socket,
+  socketInstance,
   previousMessages,
   setPreviousMessages,
 }: VoiceRecorderProps) {
@@ -185,7 +185,10 @@ export default function VoiceRecorder({
           [dateKey]: [...(prevMessages[dateKey] || []), sentMessage],
         }));
 
-        socket?.emit("message", sentMessage);
+         // Emit the voice message to the server via the chat namespace
+         if (socketInstance) {
+          socketInstance.emit("privatemessage", sentMessage);
+        }
 
         // Reset the component state after sending
         deleteRecording();
@@ -200,12 +203,12 @@ export default function VoiceRecorder({
   };
 
   return (
-    <div className="w-full max-w-sm bg-colors-custom-orange-thin border border-colors-custom-orange rounded-xl p-3">
+    <div className="w-full max-w-sm bg-inputBg border border-boneInnerBg rounded-xl p-3">
       <div className="flex items-center gap-3">
         <Avatar className="h-10 w-10">
           <AvatarImage src={currentUserProfileImage} alt="Avatar" />
           <AvatarFallback>
-            <Mic className="h-5 w-5 text-colors-custom-orange" />
+            <Mic className="h-5 w-5 text-darkbrownText" />
           </AvatarFallback>
         </Avatar>
 
@@ -213,7 +216,7 @@ export default function VoiceRecorder({
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-teal-400 hover:text-teal-300 hover:bg-teal-800/50"
+            className="h-8 w-8 text-darkbrownText hover:text-brownText hover:bg-boneInnerBg"
             onClick={handlePlayPause}
           >
             {isPlaying ? (
@@ -229,12 +232,12 @@ export default function VoiceRecorder({
           >
             {isRecording ? (
               <div className="flex items-center justify-center gap-2">
-                <Square className="h-5 w-5 text-colors-custom-orange-text-2 hover:text-colors-custom-orange-text-2/80 cursor-pointer" />
+                <Square className="h-5 w-5 text-darkbrownText hover:text-darkbrownText/80 cursor-pointer" />
                 <h1 className="text-sm text-red-500">Recording...</h1>
               </div>
             ) : (
               <>
-                <Mic className="h-6 w-6 text-colors-custom-orange-text-2 hover:text-colors-custom-orange-text-2/80 cursor-pointer" />
+                <Mic className="h-6 w-6 text-darkbrownText hover:text-darkbrownText/80 cursor-pointer" />
               </>
             )}
           </div>
@@ -244,7 +247,7 @@ export default function VoiceRecorder({
           <div className="flex-1" ref={waveformRef} />
 
           <div className="flex items-center gap-3 min-w-[140px]">
-            <span className="text-sm text-colors-custom-orange-text-2">{currentTime}</span>
+            <span className="text-sm text-darkbrownText">{currentTime}</span>
 
             {audioBlob && (
               <DropdownMenu>
@@ -252,12 +255,12 @@ export default function VoiceRecorder({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-xs text-colors-custom-orange-text-2 hover:text-colors-custom-orange-text-2/80"
+                    className="text-xs text-burntSienna hover:bg-boneInnerBg hover:text-brownText"
                   >
                     {playbackRate}x
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className="bg-albasterInnerBg text-brownText  cursor-pointer">
                   {[0.5, 1, 1.5, 2].map((rate) => (
                     <DropdownMenuItem
                       key={rate}

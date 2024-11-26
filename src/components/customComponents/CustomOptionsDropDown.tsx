@@ -58,24 +58,24 @@ const OptionsDropDownMenu = ({
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           
-            <EllipsisVertical className="h-5 w-5 text-colors-custom-orange transition-colors duration-200 hover:text-colors-custom-orange/80"/>
+            <EllipsisVertical className="h-5 w-5 text-textBlue transition-colors duration-200 hover:text-textBlue/80"/>
          
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[200px]">
-          <DropdownMenuLabel>{actions}</DropdownMenuLabel>
+        <DropdownMenuContent align="end" className="w-[200px] bg-albasterInnerBg border-boneInnerBg">
+          <DropdownMenuLabel className="text-sm text-brownText">{actions}</DropdownMenuLabel>
           <DropdownMenuGroup>
             
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger>{dropDownMenuSubtriggerText}</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent className="p-0 border-transparent">
-                <Command>
+              <DropdownMenuSubTrigger className="text-sm text-brownText">{dropDownMenuSubtriggerText}</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent className="p-0 border border-boneInnerBg rounded-xl">
+                <Command className="bg-albasterInnerBg  border border-boneInnerBg rounded-xl">
                   <CommandInput
                     placeholder={commandInputPlaceholderText}
                     autoFocus={true}
                     className="h-9"
                   />
                   <CommandList>
-                    <CommandEmpty>{commandEmptyText}</CommandEmpty>
+                    <CommandEmpty className="text-sm text-brownText p-2">{commandEmptyText}</CommandEmpty>
                     <CommandGroup>
                       {labels.map((label) => (
                         <CommandItem
@@ -85,7 +85,7 @@ const OptionsDropDownMenu = ({
                             addToList(value)
                             setOpen(false)
                           }}
-                          className="text-colors-custom-orange cursor-pointer"
+                          className="text-brownText cursor-pointer hover:bg-boneInnerBg"
                         >
                           {label}
                         </CommandItem>

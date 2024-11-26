@@ -49,23 +49,23 @@ const CustomDeleteDialog = ({
             aria-label="Delete"
           >
             {isAlertDialogTriggerContentIsIconTrash ? (
-              <Trash2 className="h-4 w-4 md:h-5 md:w-5 text-colors-custom-orange hover:text-colors-custom-orange/80 cursor-pointer" />
+              <Trash2 className="h-4 w-4 md:h-5 md:w-5 text-burntSienna hover:text-burntSiennaDeep cursor-pointer" />
             ) : (
-              <FileX className="h-4 w-4 md:h-5 md:w-5 text-colors-custom-orange hover:text-colors-custom-orange/80 cursor-pointer" />
+              <FileX className="h-4 w-4 md:h-5 md:w-5 text-burntSienna hover:text-burntSiennaDeep cursor-pointer" />
             )}
           </button>
           )}
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-albasterInnerBg border border-boneInnerBg rounded-xl">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-brownText text-left">Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-brownText text-left">
               {alertDialogDescription}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onDelete}>Continue</AlertDialogAction>
+            <AlertDialogCancel className="bg-boneInnerBg/60 hover:bg-boneInnerBg text-brownText text-md font-bold">Cancel</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-800 hover:bg-red-900 text-white text-md font-bold" onClick={onDelete}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

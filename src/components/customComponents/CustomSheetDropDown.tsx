@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { cleanupSocketInstance } from "@/lib/socket.config";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +33,7 @@ export function CustomSheetDropDown() {
       setIsLoading(true);
       const response = await logoutUser();
       if (response.status === 200) {
+        cleanupSocketInstance();
         toast.success("logged out!");
         router.replace("/login");
       }

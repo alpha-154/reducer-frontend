@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/reducer.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -69,9 +69,9 @@ const Register = () => {
     const file = e.target.files?.[0];
     // console.log("e.target.files: ", e.target.files);
     // console.log("file: ", file);
-    if (file && file.size > 5 * 1024 * 1024) {
+    if (file && file.size > 2 * 1024 * 1024) {
       // Limit to 5MB
-      toast.error("File size must be under 5MB.");
+      toast.error("File size must be under 2MB.");
     } else {
       setImage(file || null);
       setPreview(URL.createObjectURL(e.target.files![0])); // Image preview
@@ -177,7 +177,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container-max flex flex-col gap-4 items-center justify-center">
+    <div className="container-max flex flex-col items-center justify-center">
       <div className="">
         <Image
           src={logo}
@@ -188,29 +188,29 @@ const Register = () => {
           priority
         />
       </div>
-      <div className="border border-colors-custom-orange rounded-xl shadow-md p-6 md:p-8">
+      <div className="bg-albasterInnerBg border border-burntSienna rounded-xl  p-6 md:p-8 shadow-[0_0_20px_rgba(0,0,0,0.15)]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="userName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-darkbrownText text-md">Username</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Johndoe" {...field} />
+                    <Input className="text-brownText" type="text" placeholder="Johndoe" {...field} />
                   </FormControl>
 
                   {isCheckingUsername ? (
-                    <p className="flex  gap-2">
+                    <p className="flex gap-2">
                       {" "}
-                      <Loader2 className="animate-spin text-colors-custom-orange" />{" "}
-                      <span className="text-colors-custom-orange">
+                      <Loader2 className="animate-spin text-burntSienna" />{" "}
+                      <span className="text-burntSienna text-sm">
                         Checking username...
                       </span>
                     </p>
                   ) : (
-                    <p className={colorMap[usernameStatus.color]}>
+                    <p className={`${colorMap[usernameStatus.color]} text-sm`}>
                       {usernameStatus.message}
                     </p>
                   )}
@@ -222,36 +222,36 @@ const Register = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-darkbrownText text-md">Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
+                    <Input className="text-brownText"  type="password" placeholder="********" {...field} />
                   </FormControl>
                   <div className="mt-2 space-y-1">
                     <p
                       className={`text-${
                         passwordRequirements.minLength ? "green" : "red"
-                      }-500`}
+                      }-500 text-sm`}
                     >
                       • Minimum 8 characters
                     </p>
                     <p
                       className={`text-${
                         passwordRequirements.hasNumber ? "green" : "red"
-                      }-500`}
+                      }-500 text-sm`}
                     >
                       • Contains a number
                     </p>
                     <p
                       className={`text-${
                         passwordRequirements.hasUppercase ? "green" : "red"
-                      }-500`}
+                      }-500 text-sm`}
                     >
                       • Contains uppercase letter
                     </p>
                     <p
                       className={`text-${
                         passwordRequirements.hasSpecialChar ? "green" : "red"
-                      }-500`}
+                      }-500 text-sm`}
                     >
                       • Contains special character
                     </p>
@@ -265,11 +265,12 @@ const Register = () => {
               name="profileImage"
               render={() => (
                 <FormItem>
-                  <FormLabel>Profile Image</FormLabel>
+                  <FormLabel className="text-darkbrownText text-md">Profile Image</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
                       accept="image/*"
+                      className="text-brownText"
                       onChange={handleFileChange}
                     />
                   </FormControl>
@@ -292,8 +293,8 @@ const Register = () => {
             <div className="w-full flex items-center justify-center mx-auto">
               {loading ? (
                 <Button disabled>
-                  <Loader2 className="animate-spin text-colors-custom-orange" />
-                  Registration in progress...
+                  <Loader2 className="animate-spin text-burntSienna" />
+                   <span className="text-sm text-burntSienna">Registration in progress...</span>
                 </Button>
               ) : (
                 <Button variant="custom" type="submit">
@@ -304,10 +305,10 @@ const Register = () => {
           </form>
         </Form>
       </div>
-      <h1 className="text-lg ">
+      <h1 className="text-md md:text-lg text-nightText mt-3 md:mt-4 ">
         Already have an account?{" "}
         <Link href="/login">
-          <span className="text-colors-custom-orange font-bold">Login</span>
+        <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-md md:text-lg">Login</span>
         </Link>{" "}
       </h1>
     </div>

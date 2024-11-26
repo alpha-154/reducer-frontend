@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/reducer.png";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -78,7 +78,7 @@ const Login = () => {
   };
 
   return (
-    <div className="container-max flex flex-col gap-4 items-center justify-center">
+    <div className="container-max flex flex-col  items-center justify-center">
       <div className="">
         <Image
           src={logo}
@@ -89,19 +89,19 @@ const Login = () => {
           priority
         />
       </div>
-      <div className="border border-colors-custom-orange rounded-xl shadow-md p-6 md:p-8">
+      <div className="bg-albasterInnerBg border border-burntSienna rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.15)] p-6 md:p-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="userName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel className="text-darkbrownText text-md">Username</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="Johndoe" {...field} />
+                    <Input className="text-brownText" type="text" placeholder="Johndoe" {...field} />
                   </FormControl>
-                  <FormDescription>Enter your username</FormDescription>
+                  <FormDescription className="text-brownText">Enter your username</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -111,11 +111,11 @@ const Login = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="text-darkbrownText text-md">Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
+                    <Input type="password" className="text-darkbrownText" placeholder="********" {...field} />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription  className="text-brownText">
                     Enter your password maintaining the requirements.
                   </FormDescription>
                   <FormMessage />
@@ -125,8 +125,8 @@ const Login = () => {
             <div className="w-full flex items-center justify-center mx-auto">
               {loading ? (
                 <Button disabled>
-                  <Loader2 className="animate-spin  text-colors-custom-orange" />
-                  Log In...
+                  <Loader2 className="animate-spin  text-burntSienna" />
+                   <span className="text-sm text-burntSienna"></span>Log In...
                 </Button>
               ) : (
                 <Button variant="custom" type="submit">
@@ -137,10 +137,10 @@ const Login = () => {
           </form>
         </Form>
       </div>
-      <h1 className="text-lg ">
+      <h1 className="text-md md:text-lg text-nightText mt-4 md:mt-5">
         Don&apos;t have an account?{" "}
         <Link href="/register">
-          <span className="text-colors-custom-orange font-bold">Register</span>
+          <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-md md:text-lg">Register</span>
         </Link>{" "}
       </h1>
     </div>

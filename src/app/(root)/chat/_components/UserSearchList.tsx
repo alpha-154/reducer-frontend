@@ -1,4 +1,3 @@
-// components/List.tsx
 "use client";
 
 import Image from "next/image";
@@ -13,6 +12,8 @@ interface ListProps {
   isFriend: boolean;
   isMessageRequestSent: boolean;
   currentUserUserName: string;
+  currentUserProfileImage: string;
+  onSendMessageRequest: (receiverUsername: string) => Promise<void>; 
 }
 
 const UserSearchList: React.FC<ListProps> = ({
@@ -21,7 +22,11 @@ const UserSearchList: React.FC<ListProps> = ({
   isFriend,
   isMessageRequestSent,
   currentUserUserName,
+  currentUserProfileImage,
+  onSendMessageRequest
 }) => {
+
+  
   const handleMessageRequest = async () => {
     if (!currentUserUserName) return;
 
@@ -49,7 +54,7 @@ const UserSearchList: React.FC<ListProps> = ({
   };
 
   return (
-    <div className="p-2 md:p-3 bg-colors-custom-orange-thin border border-colors-custom-orange rounded-xl min-w-[250px] md:min-w-[300px]">
+    <div className="p-2 md:p-3 bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder cursor-pointer rounded-xl min-w-[250px] md:min-w-[300px]">
       <div className="flex justify-between items-center space-x-2">
         <div className="flex items-center justify-center gap-3">
           <div className="border border-transparent rounded-full w-10 h-8 flex items-center justify-center">
@@ -63,32 +68,32 @@ const UserSearchList: React.FC<ListProps> = ({
                 alt="avatar"
                 width={40}
                 height={25}
-                className="rounded-full"
+                className="h-auto w-auto rounded-full"
               />
             )}
           </div>
           <div>
-            <p className="text-lg font-semibold text-colors-custom-orange">
+            <p className="text-sm md:text-md  text-textBlue">
               {username}
             </p>
           </div>
         </div>
         <div className="">
           {username === currentUserUserName ? (
-            <p className="text-lg font-semibold text-colors-custom-orange pr-2">
+            <p className="text-xs md:text-md  text-textBlue pr-2">
               You
             </p>
           ) : (
             <>
               {isFriend ? (
-                <p className="text-lg font-semibold text-colors-custom-orange pr-2">
+                <p className="text-xs md:text-md  text-textBlue pr-2">
                   Connected
                 </p>
               ) : (
                 <button
-                  onClick={handleMessageRequest}
+                onClick={() => onSendMessageRequest(username)}
                   disabled={isMessageRequestSent}
-                  className={`p-1 px-2 md:px-4 md:p-2 flex justify-center items-center border ${isMessageRequestSent ? "border-gray-400" : "border-colors-custom-orange"} ${isMessageRequestSent ? "bg-gray-400" : "bg-colors-custom-orange"}  rounded-xl text-white`}
+                  className={`text-xs md:text-sm flex justify-center items-center text-white p-2 border rounded-xl ${isMessageRequestSent ? "bg-gray-500" : "bg-textBlue"}  `}
                 >
                   {isMessageRequestSent ? "Request Sent" : "Send Request"}
                 </button>
@@ -102,3 +107,6 @@ const UserSearchList: React.FC<ListProps> = ({
 };
 
 export default UserSearchList;
+
+
+

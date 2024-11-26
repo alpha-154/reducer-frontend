@@ -57,6 +57,26 @@ const sendMessageRequest = ({
   });
 };
 
+const fetchUser = () => {
+  return apiClient.get('/api/user/get-user-id', {
+    withCredentials: true,
+  });
+};
+
+
+const updateProfileImage = ({currentUserUserName, imageUrl}: {currentUserUserName: string; imageUrl: string}) => {
+  return apiClient.put(`/api/user/update-profile-image`, { currentUserUserName, imageUrl });
+}
+
+
+const updatePassword = ({ currentUserUserName, currentPassword, newPassword}: { currentUserUserName: string; currentPassword: string; newPassword:string;} ) => {
+  return apiClient.put(`/api/user/update-password`, {
+    currentUserUserName,
+    currentPassword,
+    newPassword
+  });
+}
+
 // ->>>>>>>>>>> Fetching all the connected users with their userNames, profileImages, lastmessages & last message time >>>>>>>>>>>>> //
 const fetchConnectedUsersWithData = (currentUserUserName: string) => {
   return apiClient.get(
@@ -196,8 +216,6 @@ const addToChatSortList = ({currentUserUserName, addedUserUserName, listName} : 
    })
 }
 
-
-
 // >>>>>>>>>>>        Chat APIs Ends      >>>>>>>>>>>>>>>>>> ///
 
 
@@ -205,16 +223,13 @@ const addToChatSortList = ({currentUserUserName, addedUserUserName, listName} : 
 
 //   >>>>>>>>>>>>>>>>  Notification APIs Starts >>>>>>>>>>>>>>> //
 
-
-// >>>>>>>>>>>>> Fetching All Notifications >>>>>>>>>>>>>> //
-
 const fetchUserNotifications = (username: string) => {
     return apiClient.get(
       `/api/notification/get-user-notifications/${username}`
     );
 }
 
-const acceptMessageRequest = ({currentUserUserName, requestedUserUserName}:
+const acceptPrivateMessageRequest = ({currentUserUserName, requestedUserUserName}:
   {
     currentUserUserName: string;
     requestedUserUserName: string;
@@ -229,7 +244,7 @@ const acceptMessageRequest = ({currentUserUserName, requestedUserUserName}:
   );
 }
 
-const rejectMessageRequest = ({currentUserUserName, requestedUserUserName}:
+const declinePrivateMessageRequest = ({currentUserUserName, requestedUserUserName}:
   {
     currentUserUserName: string;
     requestedUserUserName: string;
@@ -274,6 +289,38 @@ const declineGroupJoinReqeust = ({ requestedUserUserName, groupName}:
   );
 }
 
+const deleteNotification = ({ currentUserUserName, notificationType, notificationIndex}: { currentUserUserName: string; notificationType: string;  notificationIndex: string}) => {
+  return apiClient.delete(
+    `/api/notification/delete-user-notification/${currentUserUserName}`,
+    {
+      data: {
+        notificationType,
+        notificationIndex
+      },
+    }
+  );
+}
+
+const isNotificationSeen = ({ currentUserUserName }: { currentUserUserName: string}) => {
+  return apiClient.put(
+    `/api/notification/seen-notification`,
+    {
+      currentUserUserName
+    }
+  );
+}
+
+
+// const isNotificationRead = ({ currentUserUserName, notificationType, notificationIndex}: { currentUserUserName: string; notificationType: string;  notificationIndex: string}) => {
+//   return apiClient.put(
+//     `/api/notification/read-notification`,
+//     {
+//       currentUserUserName,
+//       notificationType,
+//       notificationIndex
+//     }
+//   );
+// }
 
 //   >>>>>>>>>>>>>>>>  Notification APIs Ends >>>>>>>>>>>>>>> //
 
@@ -284,6 +331,9 @@ export {
   loginUser,
   logoutUser,
   searchUser,
+  fetchUser,
+  updateProfileImage,
+  updatePassword,
   sendMessageRequest,
   fetchConnectedUsersWithData,
   fetchPreviousMessagesofAPrivateChat,
@@ -295,8 +345,11 @@ export {
   endConnectionWithAnUser,
   addToChatSortList,
   fetchUserNotifications,
-  acceptMessageRequest,
-  rejectMessageRequest,
+  acceptPrivateMessageRequest,
+  declinePrivateMessageRequest,
   acceptGroupJoinReqeust,
-  declineGroupJoinReqeust
+  declineGroupJoinReqeust,
+  deleteNotification,
+  //isNotificationRead,
+  isNotificationSeen 
 };

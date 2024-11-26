@@ -16,6 +16,9 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { MessageSquarePlus, Pen } from "lucide-react";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
+import { AppDispatch, RootState } from "@/lib/store";
+import { useSelector, useDispatch } from "react-redux";
+import { createUsersSortListThunk, updateUsersSortListThunk } from "@/slices/chatSlice";
 import { createSortList, updateSortList } from "@/api";
 
 interface CustomDialogProps {
@@ -48,36 +51,12 @@ const CustomChatSortListDialog = ({
   //  >>>>>>>>>>>>>>>> Handling Users Sorting List Components  >>>>>>>>>>>>//
 
   const [listName, setListName] = useState<string>("");
-  const [sortListLoader, setSortListLoader] = useState<boolean>(false);
+ 
+  const dispatch = useDispatch<AppDispatch>();
   // creating a new sorting list
-  const handleCreateSortingList = async () => {
+  const handleCreateSortingList = () => {
     if (!currentUserUserName || !listName) return;
-    const data = {
-      currentUserUserName,
-      listName,
-    };
-    try {
-      setSortListLoader(true);
-      const response = await createSortList(data);
-      if (response.status === 201) {
-        toast.success(response.data.message);
-        setListName("");
-       
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      if (err.response && err.response.data) {
-        toast.error(err.response.data.message);
-        setListName("");
-       
-      } else {
-        toast.error("Something went wrong. Please try again later.");
-        setListName("");
-       
-      }
-    } finally {
-      setSortListLoader(false);
-    }
+    dispatch(createUsersSortListThunk({ currentUserUserName, listName }));
   };
 
   // updating a existing sorting list
@@ -89,67 +68,40 @@ const CustomChatSortListDialog = ({
       setListName("");
       return;
     }
-    const data = {
-      currentUserUserName,
-      currentListName: existingListName,
-      updatedListName: listName,
-    };
-    try {
-      setSortListLoader(true);
-      const response = await updateSortList(data);
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        setListName("");
-
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      if (err.response && err.response.data) {
-        toast.error(err.response.data.message);
-        setListName("");
-
-      } else {
-        toast.error("Something went wrong. Please try again later.");
-        setListName("");
-
-      }
-    } finally{
-      setSortListLoader(false);
-    }
+   
+    dispatch(updateUsersSortListThunk({currentUserUserName, currentListName: existingListName, updatedListName: listName}));
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {isMessagePlus ? (
-          <div className="flex items-center justify-center bg-colors-custom-orange rounded-xl px-2 ">
-            <Button variant="custom">{triggerButtonText} </Button>
+          <div className="flex items-center justify-center bg-burntSienna rounded-xl px-2 ">
+            <Button variant="custom" className="text-md font-styrene-a-thin-trial">{triggerButtonText} </Button>
             {isMessagePlus && (
               <MessageSquarePlus className="-ml-3 h-5 w-5 text-white cursor-pointer" />
             )}
           </div>
         ) : (
-          <Pen className="text-colors-custom-orange h-3 w-3 md:h-4 md:w-4 cursor-pointer" />
+          <Pen className="text-colors-custom-orange h-4 w-4 md:h-5 md:w-5 cursor-pointer" />
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-albasterInnerBg border border-boneInnerBg rounded-xl">
         <DialogHeader>
-          <DialogTitle>{dialogTitleText}</DialogTitle>
-          <DialogDescription>{dialogDescriptionText}</DialogDescription>
+          <DialogTitle className="text-left text-brownText text-md">{dialogTitleText}</DialogTitle>
+          <DialogDescription className="text-left text-brownText text-md">{dialogDescriptionText}</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              {labelText}
-            </Label>
+        <div className="grid gap-4 py-3">
+          
+            
             <Input
               id="name"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
               placeholder="JohnDoe"
-              className="col-span-3 placeholder:text-colors-custom-orange-text-2"
+              className="col-span-3 placeholder:text-burntSienna"
             />
-          </div>
+          
         </div>
         <DialogFooter>
           <DialogClose asChild>
