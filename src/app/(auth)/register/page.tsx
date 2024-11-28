@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { formRegisterSchema } from "@/schema/auth.schema";
 import { Button } from "@/components/ui/button";
+import bgImg from "@/assets/messagefieldbg.png"
 import {
   Form,
   FormControl,
@@ -98,38 +99,38 @@ const Register = () => {
     }
   };
 
+  
+  const username = form.watch("userName");
   // Watch username field and debounce check for uniqueness
   useEffect(() => {
-    const username = form.watch("userName");
-
+  
     if (username.length < 5) {
       setUsernameStatus({
         message: "Username must be at least 5 characters long.",
         color: "red",
       });
     } else {
-      // Create debounced function outside the call to pass the parameter later
       const debouncedCheck = debounce(checkUsernameUnique, 500);
-      debouncedCheck(username); // Call with username argument
-
-      // Clean up debounce
+      debouncedCheck(username);
+  
       return () => {
         debouncedCheck.cancel();
       };
     }
-  }, [form.watch("userName")]);
-
+  }, [username, form]);
+  
+  
+   
+  const password = form.watch("password");
   // Watch the password field and update requirements
   useEffect(() => {
-    const password = form.watch("password");
-
     setPasswordRequirements({
       minLength: password.length >= 8,
       hasNumber: /\d/.test(password),
       hasUppercase: /[A-Z]/.test(password),
       hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
     });
-  }, [form.watch("password")]);
+  }, [password]);
 
   const onSubmit = async (data: z.infer<typeof formRegisterSchema>) => {
     try {
@@ -177,8 +178,14 @@ const Register = () => {
   };
 
   return (
-    <div className="container-max flex flex-col items-center justify-center">
-      <div className="">
+    <div style={{
+      backgroundImage: `url(${bgImg.src})`,
+      backgroundSize: "cover", // Ensures the image covers the area
+      backgroundPosition: "center", // Centers the image
+      backgroundRepeat: "no-repeat", // Prevents tiling
+    }}>
+    <div className="container-max flex flex-col items-center justify-center  max-sm:p-4">
+      {/* <div className="">
         <Image
           src={logo}
           alt="logo"
@@ -187,7 +194,7 @@ const Register = () => {
           className="w-auto h-auto"
           priority
         />
-      </div>
+      </div> */}
       <div className="bg-albasterInnerBg border border-burntSienna rounded-xl  p-6 md:p-8 shadow-[0_0_20px_rgba(0,0,0,0.15)]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -311,6 +318,7 @@ const Register = () => {
         <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-md md:text-lg">Login</span>
         </Link>{" "}
       </h1>
+    </div>
     </div>
   );
 };

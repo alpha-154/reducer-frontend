@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { formLoginSchema } from "@/schema/auth.schema";
 import { Button } from "@/components/ui/button";
+import bgImg from "@/assets/messagefieldbg.png"
 import {
   Form,
   FormControl,
@@ -78,8 +79,14 @@ const Login = () => {
   };
 
   return (
-    <div className="container-max flex flex-col  items-center justify-center">
-      <div className="">
+    <div style={{
+      backgroundImage: `url(${bgImg.src})`,
+      backgroundSize: "cover", // Ensures the image covers the area
+      backgroundPosition: "center", // Centers the image
+      backgroundRepeat: "no-repeat", // Prevents tiling
+    }}>
+         <div className="container-max flex flex-col  items-center justify-center max-sm:p-4">
+      {/* <div className="">
         <Image
           src={logo}
           alt="logo"
@@ -88,7 +95,7 @@ const Login = () => {
           className="w-auto h-auto"
           priority
         />
-      </div>
+      </div> */}
       <div className="bg-albasterInnerBg border border-burntSienna rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.15)] p-6 md:p-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -143,6 +150,7 @@ const Login = () => {
           <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-md md:text-lg">Register</span>
         </Link>{" "}
       </h1>
+    </div>
     </div>
   );
 };

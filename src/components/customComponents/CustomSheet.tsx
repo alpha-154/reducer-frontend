@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import { Settings2 } from "lucide-react";
+import { Settings, Settings2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -144,7 +144,7 @@ export default function CustomSheet() {
           size="icon"
           className="h-9 w-9 text-burntSienna hover:bg-burntSienna/60"
         >
-          <Settings2 className="h-5 w-5" />
+          <Settings2 className="h-6 w-6" />
         </Button>
       </SheetTrigger>
       <SheetContent className="bg-albasterInnerBg overflow-y-auto">

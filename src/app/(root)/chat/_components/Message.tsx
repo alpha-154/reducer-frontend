@@ -15,7 +15,7 @@ const MessageComponent = ({ message, currentUserUserName }: MessageProps) => {
         {message.contentType === "text" ? (
           <div
             className={`relative w-fit max-w-sm md:max-w-md lg:max-w-lg px-5 md:px-7 py-3 md:py-5  text-darkbrownText rounded-2xl ${
-              message.from === currentUserUserName ? "self-end bg-messageOne" : "self-start bg-boneInnerBg"
+              message.from === currentUserUserName ? "self-end bg-messageOne shadow-[0_-10px_20px_rgba(0,0,0,0.15),0_10px_20px_rgba(0,0,0,0.15)]" : "self-start bg-boneInnerBg shadow-[0_-10px_20px_rgba(0,0,0,0.15),0_10px_20px_rgba(0,0,0,0.15)]"
             }`}
           >
             <span
@@ -29,8 +29,8 @@ const MessageComponent = ({ message, currentUserUserName }: MessageProps) => {
             <div
               className={`absolute  bottom-0 ${
                 message.from === currentUserUserName
-                  ? "right-[-10px] bg-messageOne"
-                  : "left-[-10px] bg-boneInnerBg"
+                  ? "right-[-10px] bg-messageOne "
+                  : "left-[-10px] bg-boneInnerBg "
               }  w-5 h-5  rounded-bl-[15px] transform rotate-[-45deg] shadow-sm`}
             ></div>
           </div>

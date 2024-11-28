@@ -166,7 +166,7 @@ export default function VoiceRecorder({
 
   const sendRecording = async () => {
     if (audioBlob) {
-      console.log("Sending audio blob:", audioBlob);
+      if(process.env.NODE_ENV === "development")  console.log("Sending audio blob:", audioBlob);
       const formData = new FormData();
       formData.append("audio", audioBlob, "voiceMessage.wav");
       formData.append("sender", currentUserUserName);
@@ -174,9 +174,9 @@ export default function VoiceRecorder({
 
       try {
         const response = await sendVoiceMessage({ formData });
-        console.log("formdata ", formData);
+        if(process.env.NODE_ENV === "development")  console.log("formdata ", formData);
         //toast.success("Voice message sent successfully!");
-        console.log("Voice message sent successfully:", response.data);
+        if(process.env.NODE_ENV === "development")  console.log("Voice message sent successfully:", response.data);
         const sentMessage = response.data.message;
         const dateKey = dayjs(sentMessage.createdAt).format("YYYY-MM-DD");
 
@@ -197,7 +197,7 @@ export default function VoiceRecorder({
         if (err.response && err.response.data) {
           toast.error(err.response.data.message);
         }
-        console.error("Error sending voice message:", error);
+        if(process.env.NODE_ENV === "development")  console.error("Error sending voice message:", error);
       }
     }
   };

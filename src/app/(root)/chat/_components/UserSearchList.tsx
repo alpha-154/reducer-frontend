@@ -26,32 +26,6 @@ const UserSearchList: React.FC<ListProps> = ({
   onSendMessageRequest
 }) => {
 
-  
-  const handleMessageRequest = async () => {
-    if (!currentUserUserName) return;
-
-    const data = {
-      senderUsername: currentUserUserName,
-      receiverUsername: username,
-    };
-    try {
-      const response = await sendMessageRequest(data);
-
-      if (response.status === 200) {
-        toast.success(response.data.message);
-      } else {
-        toast.error("message request not sent!");
-      }
-    } catch (error) {
-      console.log("from error");
-      const errorResponse = error as AxiosError<{ message: string }>;
-      if (errorResponse.response && errorResponse.response.data) {
-        toast.error(errorResponse.response.data.message);
-      } else {
-        toast.error("Something went wrong. Please try again later.");
-      }
-    }
-  };
 
   return (
     <div className="p-2 md:p-3 bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder cursor-pointer rounded-xl min-w-[250px] md:min-w-[300px]">

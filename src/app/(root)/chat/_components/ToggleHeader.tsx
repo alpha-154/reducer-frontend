@@ -28,9 +28,7 @@ const ToggleHeader: React.FC<ToggleHeaderProps> = ({
 
   const dispatch = useDispatch<AppDispatch>();
 
-  // >>>>>>>>>>>>>>>>>  Delete a User Sorting List >>>>>>>>>>>>> //
-  const [listName, setListName] = useState<string>("");
-  const [sortListLoader, setSortListLoader] = useState<boolean>(false);
+
   // creating a new sorting list
   const handleDeleteSortingList = async () => {
     if (!currentUserUserName || !title) return;
@@ -84,7 +82,7 @@ const ToggleHeader: React.FC<ToggleHeaderProps> = ({
           </span>
         </div>
       </div>
-      {isOpen && <div className="mt-2 transition duration-300">{children}</div>}
+      {isOpen && <div className="max-h-[250px] overflow-y-auto flex flex-col gap-0  transition duration-300 p-2">{children}</div>}
     </div>
   );
 };

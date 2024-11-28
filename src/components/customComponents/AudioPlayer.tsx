@@ -38,7 +38,7 @@ export default function AudioPlayer({
 
     const setAudioData = () => {
       if (!isNaN(audio.duration)) {
-        console.log("Audio duration:", audio.duration);
+        if(process.env.NODE_ENV === "development")  console.log("Audio duration:", audio.duration);
         setDuration(audio.duration);
       }
       

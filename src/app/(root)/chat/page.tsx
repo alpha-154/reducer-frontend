@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import ToggleHeader from "./_components/ToggleHeader";
 import UserCard from "./_components/UserCard";
 import { BellDot } from "lucide-react";
@@ -36,7 +36,10 @@ const Chat = () => {
     useState<boolean>(false);
   const [searchClicked, setSearchClicked] = useState<boolean>(false);
   const { connectedUsers, status, error } = useSelector((state: RootState) => state.chat);
-  console.log("connected Users", connectedUsers);
+  
+  if( process.env.NODE_ENV === "development") {
+    console.log("connected Users", connectedUsers);
+  }
 
  
 
@@ -62,29 +65,30 @@ const Chat = () => {
 
   // >>>>>>>>>>>>>>>> Searching Users on the Search bar >>>>>>>>>>>>>> //
 
-  // Debounced search function
-  const fetchUsers = debounce(async (query: string) => {
-    if (!currentUserUserName) return;
-    if (query.trim() === "") {
-      setSearchFindUsers([]);
-      setFetchSearcedUserLoading(false);
-      return;
-    }
-    const data = {
-      currentUserUserName,
-      query,
-    };
-    try {
-      setFetchSearcedUserLoading(true); // Start loading when search begins
-      const response = await searchUser(data);
-      console.log("searched user data", response.data.users);
-      setSearchFindUsers(response.data.users);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    } finally {
-      setFetchSearcedUserLoading(false); // End loading when search completes
-    }
-  }, 300);
+ // Debounced search function
+ const fetchUsers = debounce(async (query: string) => {
+  if (!currentUserUserName) return;
+  if (query.trim() === "") {
+    setSearchFindUsers([]);
+    setFetchSearcedUserLoading(false);
+    return;
+  }
+  const data = {
+    currentUserUserName,
+    query,
+  };
+  try {
+    setFetchSearcedUserLoading(true); // Start loading when search begins
+    const response = await searchUser(data);
+    if(process.env.NODE_ENV === "development")  console.log("searched user data", response.data.users);
+    setSearchFindUsers(response.data.users);
+  } catch (error) {
+    if(process.env.NODE_ENV === "development")  console.error("Error fetching users:", error);
+  } finally {
+    setFetchSearcedUserLoading(false); // End loading when search completes
+  }
+}, 300);
+
 
   // Effect to handle input change
   useEffect(() => {
@@ -154,7 +158,7 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
   );
 
   return (
-    <div className="min-h-screen bg-albasterInnerBg shadow-[0_0_20px_rgba(0,0,0,0.20)] w-full flex flex-col items-center gap-5 md:gap-7 border border-burntSienna rounded-xl py-8 md:py-10 max-sm:px-2">
+    <div className="min-h-screen bg-albasterInnerBg  w-full flex flex-col items-center gap-5 md:gap-7  py-6 md:py-8">
       {/* Header portion */}
       <h1 className="text-2xl md:text-3xl text-brownText font-styrene-a-thin-trial">
         Private Message
@@ -177,7 +181,7 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
             Search
           </Button>
         </div>
-        <div className="max-h-[300px] flex flex-col items-center gap-2 p-4 overflow-y-auto">
+        <div className="max-h-[200px] flex flex-col items-center gap-2 p-4 overflow-y-auto">
           {/* Show loading message */}
           {fetchSearcedUserLoading && !searchClicked ? (
             <p className="text-sm text-brownText font-styrene-a-thin-trial">Searching the user...</p>
@@ -212,7 +216,7 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
       </div>
 
       {/* Main portion */}
-      <div className="min-h-fit flex flex-col items-center justify-between gap-10">
+      <div className="min-h-fit flex flex-col items-center justify-between gap-10 -mt-6 md:-mt-10">
         {/* Users list */}
         <div className="flex flex-col gap-2 min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center mt-10 md:mt-15">
           {status === "loading" ? (
@@ -230,6 +234,7 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
                       title={user.listName}
                       currentUserUserName={currentUserUserName}
                     >
+                     
                       {user.members.map((member, index) => (
                         <UserCard
                           key={index}
@@ -243,6 +248,8 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
                           currentUserProfileImage={currentUserProfileImage}
                         />
                       ))}
+                     
+                     
                     </ToggleHeader>
                   ))
                 )}
@@ -251,7 +258,10 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
           )}
         </div>
         {/* Footer */}
-        <div className="bg-burntSienna/15 hover:bg-burntSienna/30  mx-auto flex justify-between  min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center mt-5 p-3 border border-burntSienna rounded-xl">
+        { status === "loading" ? (
+          <CustomSkeleton numOfTimes={1} isChatSkeleton={false} />
+        ): (
+          <div className="bg-burntSienna/15 hover:bg-burntSienna/30  mx-auto flex justify-between  min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center mt-5 p-3 border border-burntSienna rounded-xl">
           <div>
             <CustomChatSortListDialog
               triggerButtonText="Add a list"
@@ -281,6 +291,8 @@ const handleSendPrivateMessageRequest = async (receiverUsername: string) => {
             <CustomSheet/>
           </div>
         </div>
+        )}
+      
       </div>
     </div>
   );

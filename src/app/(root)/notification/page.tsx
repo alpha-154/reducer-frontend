@@ -70,7 +70,7 @@ const NotificationPage = () => {
 
   if (status === "failed") {
     return (
-      <div className="container-max border border-burntSienna rounded-xl px-6 py-8 md:py-10">
+      <div className="container-max  px-6 py-4 md:py-6">
         <h1 className="text-center text-2xl md:text-3xl text-colors-custom-orange">
           Notifications
         </h1>
@@ -82,7 +82,7 @@ const NotificationPage = () => {
   }
 
   return (
-    <div className="container-max bg-albasterInnerBg border border-burntSienna rounded-xl px-6 py-8 md:py-10">
+    <div className="container-max bg-albasterInnerBg  px-6 py-4 md:py-6">
       <h1 className="text-center text-2xl md:text-3xl text-darkbrownText">
         Notifications
       </h1>

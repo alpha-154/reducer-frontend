@@ -16,7 +16,7 @@ if (!baseURL) {
  * Handles all communication.
  */
 export const getSocketInstance = (): Socket => {
-  console.log("getSocketInstance() function called");
+  if(process.env.NODE_ENV === "development")  console.log("getSocketInstance() function called");
   if (!socketInstance) {
     socketInstance = io(baseURL, {
       autoConnect: false, // Ensure you control when the connection starts
@@ -33,7 +33,7 @@ export const getSocketInstance = (): Socket => {
  * Cleanup function to disconnect the main socket on logout or app shutdown.
  */
 export const cleanupSocketInstance = () => {
-  console.log("cleanupSocketInstance() function called");
+  if(process.env.NODE_ENV === "development")  console.log("cleanupSocketInstance() function called");
   if (socketInstance) {
     socketInstance.off(); // Remove all listeners
 
@@ -43,8 +43,10 @@ export const cleanupSocketInstance = () => {
 
     socketInstance = null; // Clear the reference
   }
-  console.log(
-    "socketInstance cleaned up (cleanupSocketInstance()):",
-    socketInstance
-  );
+  if(process.env.NODE_ENV === "development")  {
+    console.log(
+      "socketInstance cleaned up (cleanupSocketInstance()):",
+      socketInstance
+    );
+  } 
 };

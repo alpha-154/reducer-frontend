@@ -77,7 +77,7 @@ const CustomChatSortListDialog = ({
       <DialogTrigger asChild>
         {isMessagePlus ? (
           <div className="flex items-center justify-center bg-burntSienna rounded-xl px-2 ">
-            <Button variant="custom" className="text-md font-styrene-a-thin-trial">{triggerButtonText} </Button>
+            <Button variant="custom" className="text-sm md:text-md font-styrene-a-thin-trial">{triggerButtonText} </Button>
             {isMessagePlus && (
               <MessageSquarePlus className="-ml-3 h-5 w-5 text-white cursor-pointer" />
             )}

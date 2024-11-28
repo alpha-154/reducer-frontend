@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { toast } from "sonner";
-
+import userBgImg from "@/assets/userbg.png";
 import Drawer from "./Drawer"; // Import the Drawer component
 import Image from "next/image";
 import dayjs from "dayjs";
@@ -109,7 +109,15 @@ const UserCard: React.FC<UserCardProps> = ({
 
   return (
     <>
-      <div className="bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder rounded-xl flex items-center gap-1 transition duration-300  p-3  mb-2 cursor-pointer">
+      <div 
+      className="bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder rounded-xl flex items-center gap-1 transition duration-300  p-3  mb-2 cursor-pointer"
+      style={{
+        backgroundImage: `url(${userBgImg.src})`,
+        backgroundSize: "cover", // Ensures the image covers the area
+        backgroundPosition: "center", // Centers the image
+        backgroundRepeat: "no-repeat", // Prevents tiling
+      }}
+      >
         <div
           onClick={toggleDrawer}
           className="basis-[95%] w-full flex justify-between items-center"

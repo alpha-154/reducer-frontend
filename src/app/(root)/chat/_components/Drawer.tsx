@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react"; // Import Emoji Picker
 import { useSocketInstance } from "@/contexts/socketContext";
-import { Socket } from "socket.io-client";
+import bgImg from "@/assets/messagefieldbg.png"
 import { Textarea } from "@/components/ui/textarea";
 
 import { AxiosError } from "axios";
@@ -73,7 +73,11 @@ const Drawer: React.FC<DrawerProps> = ({
 
     // Access the main socket instance
     const socketInstance = useSocketInstance(); 
-    console.log("socket instance called!")
+    
+    if(process.env.NODE_ENV === "development"){
+      console.log("socket instance called!")
+    }
+    
 
 
   // >>>>>>>>>>>>>>>>> Voice Recorder Toggle Function >>>>>>>>>>>>>> //
@@ -85,7 +89,7 @@ const Drawer: React.FC<DrawerProps> = ({
 
   // Join the private chat room
   useEffect(() => {
-    console.log("socket useEffect triggered:");
+    if(process.env.NODE_ENV === "development") console.log("socket useEffect triggered:");
     if (!privateMessageId || !socketInstance) return;
 
     const joinRoomData = { roomIdentifier: privateMessageId };
@@ -105,7 +109,7 @@ const Drawer: React.FC<DrawerProps> = ({
       // Emit leaveRoom event before cleaning up
       socketInstance.emit("leaveRoom", { roomIdentifier: privateMessageId });
       socketInstance.off("privatemessage", handleIncomingMessage);
-      console.log("privatemessage event removed");
+      if(process.env.NODE_ENV === "development")  console.log("privatemessage event removed");
     };
   }, [socketInstance, privateMessageId]);
  
@@ -151,15 +155,15 @@ const Drawer: React.FC<DrawerProps> = ({
       setMessage("");
     } catch (error) {
       const errorResponse = error as AxiosError<{ message: string }>;
-      console.log("error response ", errorResponse);
-      console.log("Error while sending private message", error);
+      if(process.env.NODE_ENV === "development")  console.log("error response ", errorResponse);
+      if(process.env.NODE_ENV === "development")  console.log("Error while sending private message", error);
     } 
   };
 
   // >>>>>>>>>>>>>>>>>>> Fetching Previous Conversation Messages >>>>>>>>>>>>>>>>>> //
 
   useEffect(() => {
-    console.log("fetching previous messages useEffect triggered: ")
+    if(process.env.NODE_ENV === "development")  console.log("fetching previous messages useEffect triggered: ")
     const getPreviousMessages = async () => {
       if (!currentUserUserName) return;
       const data = {
@@ -171,13 +175,13 @@ const Drawer: React.FC<DrawerProps> = ({
         const response = await fetchPreviousMessagesofAPrivateChat(data);
 
         if (response.status === 200) {
-          console.log("previous Messages: ", response.data.previousMessages);
+         if(process.env.NODE_ENV === "development") console.log("previous Messages: ", response.data.previousMessages);
           setPreviousMessages(response.data.previousMessages);
         }
       } catch (error) {
         const errorResponse = error as AxiosError<{ message: string }>;
-        console.log("error response", errorResponse);
-        console.log("Error while fetching previous private messages", error);
+        if(process.env.NODE_ENV === "development")   console.log("error response", errorResponse);
+        if(process.env.NODE_ENV === "development")  console.log("Error while fetching previous private messages", error);
       } finally {
         setPreviousMessagesLoading(false);
       }
@@ -257,7 +261,13 @@ const Drawer: React.FC<DrawerProps> = ({
             {/* Message area */}
             <div
               ref={messageContainerRef}
-              className="max-h-[65vh] min-h-[64vh] bg-albasterInnerBg shadow-[0_0_20px_rgba(0,0,0,0.20)] mt-2 flex flex-col gap-3 md:gap-5 border-2 border-boneInnerBg rounded-xl p-3 md:p-5 px-7 md:px-10 overflow-y-auto"
+              className="max-h-[65vh] min-h-[64vh] shadow-[0_0_20px_rgba(0,0,0,0.20)] mt-2 flex flex-col gap-3 md:gap-5 border-2 border-boneInnerBg rounded-xl p-3 md:p-5 px-7 md:px-10 overflow-y-auto"
+              style={{
+                backgroundImage: `url(${bgImg.src})`,
+                backgroundSize: "cover", // Ensures the image covers the area
+                backgroundPosition: "center", // Centers the image
+                backgroundRepeat: "no-repeat", // Prevents tiling
+              }}
             >
               {previousMessagesLoading ? (
                 <CustomSkeleton isChatSkeleton={true} numOfTimes={1} />
