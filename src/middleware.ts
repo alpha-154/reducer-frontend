@@ -4,19 +4,20 @@ import { NextResponse , NextRequest} from "next/server";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
- //console.log("middleware -> path:", path);
+ console.log("middleware -> path:", path);
 
   const authenticationRoute = ["/register", "/login",];
 
   const landingPage = "/";
 
   const token = request.cookies.get("accessToken")?.value || null;
-//  console.log("middleware -> token:", token);
+  console.log("middleware -> token:", token);
 
   
 
   // If the user is authenticated and tries to access auth pages, redirect them to the dashboard
   if (authenticationRoute.includes(path) && token) {
+    console.log("path: ", path, "token", token);
     return NextResponse.redirect(new URL("/chat", request.nextUrl));
   }
 
@@ -36,9 +37,10 @@ export function middleware(request: NextRequest) {
 
   // If the user tries to access private routes without authentication, redirect to sign-in
   if (privateRoutes.includes(path) && !token) {
-    const signInUrl = new URL("/login", request.nextUrl);
-    signInUrl.searchParams.set("redirect", path); // Pass the original path as a query parameter
-    return NextResponse.redirect(signInUrl);
+    // const signInUrl = new URL("/login", request.nextUrl);
+    // signInUrl.searchParams.set("redirect", path); // Pass the original path as a query parameter
+    console.log("redirect path")
+    return NextResponse.redirect(new URL("/login", request.nextUrl));
 
   }
 

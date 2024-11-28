@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Creating an Axios instance for API requests
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://reducer-backend.onrender.com",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL ,
   withCredentials: true,
   timeout: 120000,
 });

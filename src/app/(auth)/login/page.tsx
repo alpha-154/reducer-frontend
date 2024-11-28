@@ -63,6 +63,7 @@ const Login = () => {
         toast.success(response.data.message);
         form.reset();
         setLoading(false);
+        console.log("replacing the /login with /chat")
         router.replace("/chat");
       }
     } catch (err) {
