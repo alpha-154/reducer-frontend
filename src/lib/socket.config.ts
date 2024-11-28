@@ -7,7 +7,7 @@ let socketInstance: Socket | null = null;
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 if (!baseURL) {
   throw new Error(
-    "NEXT_PUBLIC_API_BASE_URL is not defined in the environment variables"
+    "NEXT_PUBLIC_API_BASE_URL is not defined in the environment variables .env file"
   );
 }
 
