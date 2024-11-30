@@ -3,12 +3,18 @@ import { NextResponse , NextRequest} from "next/server";
 
 
 export function middleware(request: NextRequest) {
+  console.log("middleware function is called");
   const path = request.nextUrl.pathname;
  console.log("middleware -> path:", path);
 
   const authenticationRoute = ["/register", "/login",];
 
   const landingPage = "/";
+
+
+  console.log("All cookies:", request.cookies);
+console.log("Token:", request.cookies.get("accessToken")?.value);
+
 
   const token = request.cookies.get("accessToken")?.value || null;
   console.log("middleware -> token:", token);
@@ -31,8 +37,8 @@ export function middleware(request: NextRequest) {
    
     "/mail",
     "/group",
-    "/chat",
-    "/notification",
+    // "/chat",
+    // "/notification",
    ];
 
   // If the user tries to access private routes without authentication, redirect to sign-in
@@ -55,8 +61,8 @@ export const config = {
     "/login",
     "/mail",
     "/group",
-    "/chat",
-    "/notification",
+    // "/chat",
+    // "/notification",
   ],
 };
 
