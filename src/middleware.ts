@@ -1,4 +1,5 @@
 import { NextResponse , NextRequest} from "next/server";
+import { checkAuthentication } from "./actions/checkAuthentication";
 
 
 
@@ -13,11 +14,12 @@ export function middleware(request: NextRequest) {
 
 
   // Debug cookies
-  console.log("All Cookies:", request.cookies);
-console.log("Token:", request.cookies.get("accessToken")?.value);
+ // console.log("All Cookies:", request.cookies);
+  //console.log("Token:", request.cookies.get("accessToken")?.value);
 
 
-  const token = request.cookies.get("accessToken")?.value || null;
+ // const token = request.cookies.get("accessToken")?.value || null;
+ const token = checkAuthentication(request);
 
   console.log("middleware -> token:", token);
 
@@ -39,8 +41,8 @@ console.log("Token:", request.cookies.get("accessToken")?.value);
    
     "/mail",
     "/group",
-    // "/chat",
-    // "/notification",
+    "/chat",
+    "/notification",
    ];
 
   // If the user tries to access private routes without authentication, redirect to sign-in
@@ -63,8 +65,8 @@ export const config = {
     "/login",
     "/mail",
     "/group",
-    // "/chat",
-    // "/notification",
+    "/chat",
+    "/notification",
   ],
 };
 
