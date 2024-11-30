@@ -141,6 +141,10 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
       const response = await logoutUser();
       if (response.status === 200) {
         console.log("response status: ", response.status);
+        // Clear the local storage
+      localStorage.clear(); // Removes all stored data
+      // Alternatively, remove specific keys:
+      // localStorage.removeItem("yourKey");
         cleanupSocketInstance();
         toast.success("logged out!");
         router.replace("/login");

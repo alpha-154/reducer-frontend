@@ -61,6 +61,9 @@ const Login = () => {
 
       if (response.status === 200) {
         toast.success(response.data.message);
+        if(process.env.NODE_ENV === "development") console.log("User's Token: ", response.data.token);
+        
+        localStorage.setItem("token", response.data.token); // Store the token
         form.reset();
         setLoading(false);
         console.log("replacing the /login with /chat")

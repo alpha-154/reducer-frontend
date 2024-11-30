@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from "@/lib/store";
 import { AppSidebar } from "@/components/customComponents/AppSidebar";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import ProtectedRoute from "@/components/customComponents/ProtectedRoute";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar username={username} profileImage={profileImage} />
       <main className="flex-1 bg-albasterInnerBg border border-burntSienna rounded-xl m-5 md:m-10 shadow-[0_0_20px_rgba(0,0,0,0.20)]">
         <SidebarTrigger className="ml-2 mt-2 md:ml-5 md:mt-5" />
-        {children}
+         <ProtectedRoute>{children}</ProtectedRoute>
       </main>
     </SidebarProvider>
   );
