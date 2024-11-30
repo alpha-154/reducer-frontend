@@ -17,8 +17,8 @@ export function middleware(request: NextRequest) {
 console.log("Token:", request.cookies.get("accessToken")?.value);
 
 
- // const token = request.cookies.get("accessToken")?.value || null;
-  const token = true;
+  const token = request.cookies.get("accessToken")?.value || null;
+
   console.log("middleware -> token:", token);
 
   
@@ -39,8 +39,8 @@ console.log("Token:", request.cookies.get("accessToken")?.value);
    
     "/mail",
     "/group",
-    "/chat",
-    "/notification",
+    // "/chat",
+    // "/notification",
    ];
 
   // If the user tries to access private routes without authentication, redirect to sign-in
@@ -63,8 +63,8 @@ export const config = {
     "/login",
     "/mail",
     "/group",
-    "/chat",
-    "/notification",
+    // "/chat",
+    // "/notification",
   ],
 };
 
