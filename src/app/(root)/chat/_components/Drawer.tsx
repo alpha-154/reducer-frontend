@@ -1,4 +1,3 @@
-// Drawer.tsx
 "use client";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -15,9 +14,10 @@ import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react"; // Impo
 import { useSocketInstance } from "@/contexts/socketContext";
 import bgImg from "@/assets/messagefieldbg.png"
 import { Textarea } from "@/components/ui/textarea";
-
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/store";
 import { AxiosError } from "axios";
-
+import { updateLastMessage, updateUnseenMessages } from "@/slices/chatSlice";
 import dayjs from "dayjs";
 import { fetchPreviousMessagesofAPrivateChat, sendPrivateMessage } from "@/api";
 
@@ -30,6 +30,7 @@ interface DrawerProps {
   isOpen: boolean;
   onClose: () => void;
   currentUserUserName: string;
+  currentUserId: string;
   currentUserProfileImage: string;
   userName: string;
   profileImage: string;
@@ -41,6 +42,7 @@ export interface Message {
   to: string;
   contentType: string;
   content: string;
+  seenBy: string[];
   isGroupMsg: boolean;
   senderProfileImage?: string;
   groupMsgIdentifier?: string;
@@ -52,6 +54,7 @@ const Drawer: React.FC<DrawerProps> = ({
   isOpen,
   onClose,
   currentUserUserName,
+  currentUserId,
   currentUserProfileImage,
   userName,
   profileImage,
@@ -59,6 +62,7 @@ const Drawer: React.FC<DrawerProps> = ({
 }) => {
   // >>>>>>>>>>>>>>>>> States >>>>>>>>>>>>>>>///
 
+  const dispatch = useDispatch<AppDispatch>();
   const [previousMessages, setPreviousMessages] = useState<{
     [date: string]: Message[];
   }>({});
@@ -95,19 +99,32 @@ const Drawer: React.FC<DrawerProps> = ({
     const joinRoomData = { roomIdentifier: privateMessageId };
     socketInstance.emit("joinRoom", joinRoomData);
 
+    dispatch(updateUnseenMessages({ userName}));
+
     const handleIncomingMessage = (incomingMessage: Message) => {
       const dateKey = dayjs(incomingMessage.createdAt).format("YYYY-MM-DD");
       setPreviousMessages((prevMessages) => ({
         ...prevMessages,
         [dateKey]: [...(prevMessages[dateKey] || []), incomingMessage],
       }));
+      dispatch(updateLastMessage({
+        username: userName,
+        lastMessage: incomingMessage.content,
+        lastMessageTime: incomingMessage.createdAt,
+      }));
     };
 
     socketInstance.on("privatemessage", handleIncomingMessage);
 
+    
     return () => {
+     
+
       // Emit leaveRoom event before cleaning up
-      socketInstance.emit("leaveRoom", { roomIdentifier: privateMessageId });
+      socketInstance.emit("leaveRoom", {
+        roomIdentifier: privateMessageId,
+        
+      });
       socketInstance.off("privatemessage", handleIncomingMessage);
       if(process.env.NODE_ENV === "development")  console.log("privatemessage event removed");
     };
@@ -136,17 +153,23 @@ const Drawer: React.FC<DrawerProps> = ({
     };
 
     try {
+      
 
       const response = await sendPrivateMessage(data);
 
       const sentMessage = response.data.message;
+      console.log("sentMessage -> drawer", sentMessage);
       const dateKey = dayjs(sentMessage.createdAt).format("YYYY-MM-DD");
        // Update UI with the new message
       setPreviousMessages((prevMessages) => ({
         ...prevMessages,
         [dateKey]: [...(prevMessages[dateKey] || []), sentMessage],
       }));
-
+        dispatch(updateLastMessage({
+          username: userName,
+          lastMessage: sentMessage.content,
+          lastMessageTime: sentMessage.createdAt,
+        }));
          // Emit the message to the other user through the socket instance
          if (socketInstance) {
           socketInstance.emit("privatemessage", sentMessage);
@@ -210,6 +233,8 @@ const Drawer: React.FC<DrawerProps> = ({
     scrollToBottom();
   }, [previousMessages]);
 
+
+  
 
   return (
     <>
@@ -281,8 +306,8 @@ const Drawer: React.FC<DrawerProps> = ({
                       <MessageComponent
                         key={index}
                         message={message}
-                    
                         currentUserUserName={currentUserUserName}
+                        currentUserId={currentUserId}
                       />
                     ))}
                   </div>
@@ -358,3 +383,6 @@ const Drawer: React.FC<DrawerProps> = ({
 };
 
 export default Drawer;
+
+
+

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
+
 import {
   fetchUserNotifications,
   acceptPrivateMessageRequest,
@@ -14,6 +15,7 @@ import { toast } from "sonner";
 
 // Notification types
 interface NotificationBase {
+  id: string;
   name: string;
   image: string;
   date: string;
@@ -62,6 +64,7 @@ const initialState: InitialStateProps = {
 export const fetchNotificationsThunk = createAsyncThunk(
   "notifications/fetchUserNotifications",
   async (username: string, { rejectWithValue }) => {
+    console.log("fetchUserNotification called");
     try {
       const response = await fetchUserNotifications(username);
 
@@ -90,6 +93,7 @@ export const acceptPrivateMessageRequestThunk = createAsyncThunk(
       const response = await acceptPrivateMessageRequest(data);
       if (response.status === 200) {
         toast.success(response.data.message);
+       
         return response.data.requestedUserUserName;
       }
     } catch (error) {
@@ -309,8 +313,14 @@ const notificationSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {
-    updateUnseenNotifications: (state) => {
-      state.unSeenNotifications = 0;
+    updateUnseenNotifications: (state, action) => {
+      console.log("action.payload -> updateUnseenNotification reducer: ", action.payload);
+      if(action.payload.allSeen){
+        state.unSeenNotifications = 0;
+      }
+      else if(action.payload.addOne){
+        state.unSeenNotifications += 1;
+      } 
       //console.log("unSeenNotifications -> slice ", state.unSeenNotifications);
     },
     clearNotification: (state) => {

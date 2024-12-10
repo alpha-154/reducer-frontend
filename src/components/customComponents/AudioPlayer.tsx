@@ -13,14 +13,14 @@ import {
 
 interface AudioPlayerProps {
   from: string;
-  currentUserUserName: string;
+  currentUserId: string;
   audioUrl: string;
   createdAt: Date;
 }
 
 export default function AudioPlayer({
   from,
-  currentUserUserName,
+  currentUserId,
   audioUrl,
   createdAt,
 }: AudioPlayerProps) {
@@ -97,7 +97,7 @@ export default function AudioPlayer({
   };
 
   return (
-    <div className={`w-full ${from === currentUserUserName ? "bg-messageOne" : "bg-boneInnerBg"} max-w-md  rounded-xl p-4 shadow-lg`}>
+    <div className={`w-full ${from === currentUserId ? "bg-messageOne" : "bg-boneInnerBg"} max-w-md  rounded-xl p-4 shadow-lg`}>
 
 
       <audio ref={audioRef} src={audioUrl} />

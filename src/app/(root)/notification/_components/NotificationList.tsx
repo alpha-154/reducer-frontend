@@ -3,6 +3,7 @@
 import CustomDeleteDialog from "@/components/customComponents/CustomDeleteDialog";
 import Image from "next/image";
 import React, { useEffect } from "react";
+import { useSocketInstance } from "@/contexts/socketContext";
 import { AppDispatch, RootState } from "@/lib/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,7 +19,9 @@ import {
 interface NotificationProps {
   isSeen: boolean;
   currentUser: string;
+  currentUserId: string;
   name: string;
+  otherUserId: string;
   profileImage: string;
   date: string;
   groupName?: string;
@@ -30,7 +33,9 @@ interface NotificationProps {
 const Notification: React.FC<NotificationProps> = ({
   isSeen,
   currentUser,
+  currentUserId,
   name,
+  otherUserId,
   profileImage,
   date,
   groupName,
@@ -39,6 +44,7 @@ const Notification: React.FC<NotificationProps> = ({
   index,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const socket = useSocketInstance();
 
   const handlePrivateMessageAcceptRequest = () => {
     dispatch(
@@ -46,7 +52,13 @@ const Notification: React.FC<NotificationProps> = ({
         currentUserUserName: currentUser,
         requestedUserUserName: name,
       })
-    );
+    ).then(() => {
+      socket?.emit("newNotification", {
+        recipientUserId : otherUserId,
+        payload: `${currentUser} accepted your private message request`,
+
+      });
+    });
   };
 
   const handleDeclinePrivateMessageRequest = () => {
@@ -55,7 +67,13 @@ const Notification: React.FC<NotificationProps> = ({
         currentUserUserName: currentUser,
         requestedUserUserName: name,
       })
-    );
+    ).then(() => {
+      socket?.emit("newNotification", {
+        recipientUserId : otherUserId,
+        payload: `${currentUser} declined your private message request`,
+
+      });
+    });;
   };
 
   const handleDeleteNotification = () => {
@@ -75,7 +93,13 @@ const Notification: React.FC<NotificationProps> = ({
         requestedUserUserName: name,
         groupName: groupName,
       })
-    );
+    ).then(() => {
+      socket?.emit("newNotification", {
+        recipientUserId : currentUserId,
+        payload: `${currentUser} accepted your group join request`,
+
+      });
+    });;
   };
 
 
@@ -86,7 +110,13 @@ const Notification: React.FC<NotificationProps> = ({
         requestedUserUserName: name,
         groupName: groupName,
       })
-    );
+    ).then(() => {
+      socket?.emit("newNotification", {
+        recipientUserId : currentUserId,
+        payload: `${currentUser} declined your group join request`,
+
+      });
+    });;
   };
 
  

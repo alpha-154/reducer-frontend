@@ -83,7 +83,7 @@ export default function RootLayout({
         <ReduxProvider>
           <SocketProvider>
             {children}
-            <Toaster className="max-sm:max-w-[300px]" richColors duration={2000} position="bottom-right" />
+            <Toaster className="max-sm:max-w-[350px]" richColors position="bottom-right" />
           </SocketProvider>
         </ReduxProvider>
       </body>

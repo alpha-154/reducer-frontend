@@ -2,31 +2,28 @@
 
 import Image from "next/image";
 import React from "react";
-import { AxiosError } from "axios";
-import { sendMessageRequest } from "@/api";
-import { toast } from "sonner";
 
 interface ListProps {
+  userId: string;
   username: string;
   avatar: string;
   isFriend: boolean;
   isMessageRequestSent: boolean;
   currentUserUserName: string;
   currentUserProfileImage: string;
-  onSendMessageRequest: (receiverUsername: string) => Promise<void>; 
+  onSendMessageRequest: ({receiverUsername, receiverUserId}: {receiverUsername: string, receiverUserId: string}) => Promise<void>;
 }
 
 const UserSearchList: React.FC<ListProps> = ({
+  userId,
   username,
   avatar,
   isFriend,
   isMessageRequestSent,
   currentUserUserName,
   currentUserProfileImage,
-  onSendMessageRequest
+  onSendMessageRequest,
 }) => {
-
-
   return (
     <div className="p-2 md:p-3 bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder cursor-pointer rounded-xl min-w-[250px] md:min-w-[300px]">
       <div className="flex justify-between items-center space-x-2">
@@ -47,16 +44,12 @@ const UserSearchList: React.FC<ListProps> = ({
             )}
           </div>
           <div>
-            <p className="text-sm md:text-md  text-textBlue">
-              {username}
-            </p>
+            <p className="text-sm md:text-md  text-textBlue">{username}</p>
           </div>
         </div>
         <div className="">
           {username === currentUserUserName ? (
-            <p className="text-xs md:text-md  text-textBlue pr-2">
-              You
-            </p>
+            <p className="text-xs md:text-md  text-textBlue pr-2">You</p>
           ) : (
             <>
               {isFriend ? (
@@ -65,9 +58,11 @@ const UserSearchList: React.FC<ListProps> = ({
                 </p>
               ) : (
                 <button
-                onClick={() => onSendMessageRequest(username)}
+                  onClick={() => onSendMessageRequest({receiverUsername: username, receiverUserId:userId})}
                   disabled={isMessageRequestSent}
-                  className={`text-xs md:text-sm flex justify-center items-center text-white p-2 border rounded-xl ${isMessageRequestSent ? "bg-gray-500" : "bg-textBlue"}  `}
+                  className={`text-xs md:text-sm flex justify-center items-center text-white p-2 border rounded-xl ${
+                    isMessageRequestSent ? "bg-gray-500" : "bg-textBlue"
+                  }  `}
                 >
                   {isMessageRequestSent ? "Request Sent" : "Send Request"}
                 </button>
@@ -81,6 +76,3 @@ const UserSearchList: React.FC<ListProps> = ({
 };
 
 export default UserSearchList;
-
-
-

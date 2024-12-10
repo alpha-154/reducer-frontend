@@ -3,7 +3,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserThunk } from "@/slices/userSlice";
+
 import {
+  fetchNotificationsThunk,
   seenNotificationThunk,
   updateUnseenNotifications,
 } from "@/slices/notificationSlice";
@@ -13,7 +15,7 @@ import CustomSkeleton from "@/components/customComponents/CustomSkeleton";
 
 const NotificationPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { username } = useSelector((state: RootState) => state.user);
+  const { userId, username } = useSelector((state: RootState) => state.user);
   //console.log("username -> app/notification/page.tsx ", username);
   const { notifications, unSeenNotifications, status, error } = useSelector(
     (state: RootState) => state.notification
@@ -25,6 +27,13 @@ const NotificationPage = () => {
     dispatch(fetchUserThunk());
   }, [dispatch]);
 
+  //fetching the notification as soon as username is available
+  useEffect(() => {
+    if (username) {
+      dispatch(fetchNotificationsThunk(username));
+    }
+  }, [dispatch, username]);
+
   // Track if the component is unmounting
   const isUnmounting = useRef(false);
 
@@ -35,7 +44,7 @@ const NotificationPage = () => {
     if (username) {
       return () => {
         if (isUnmounting.current && unSeenNotifications !== 0) {
-          dispatch(updateUnseenNotifications());
+          dispatch(updateUnseenNotifications({ allSeen : true}));
           dispatch(seenNotificationThunk({ currentUserUserName: username }));
         }
       };
@@ -68,18 +77,13 @@ const NotificationPage = () => {
     }
   };
 
-  if (status === "failed") {
-    return (
-      <div className="container-max  px-6 py-4 md:py-6">
-        <h1 className="text-center text-2xl md:text-3xl text-colors-custom-orange">
-          Notifications
-        </h1>
-        <div className="max-w-3xl mt-10 flex flex-col gap-5 mx-auto ">
-          <p className="text-center text-colors-custom-orange">{error}</p>
-        </div>
-      </div>
+  // Check if all notification arrays are empty
+  const isEmptyNotifications =
+    notifications &&
+    Object.values(notifications).every(
+      (notifArray) => Array.isArray(notifArray) && notifArray.length === 0
     );
-  }
+
 
   return (
     <div className="container-max bg-albasterInnerBg  px-6 py-4 md:py-6">
@@ -91,7 +95,7 @@ const NotificationPage = () => {
           <CustomSkeleton numOfTimes={4} isChatSkeleton={false} />
         ) : (
           <>
-            {unSeenNotifications === 0 ? (
+            { isEmptyNotifications ? (
               <p className="text-center text-md text-colors-custom-orange">
                 No new notifications!
               </p>
@@ -106,7 +110,9 @@ const NotificationPage = () => {
                           key={`${type}-${notification.index}`}
                           isSeen={notification.isSeen}
                           currentUser={username}
+                          currentUserId={userId}
                           name={notification.name}
+                          otherUserId={notification.id}
                           profileImage={notification.image}
                           date={notification.date}
                           groupName={notification.groupName}

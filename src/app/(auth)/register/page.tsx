@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import logo from "@/assets/reducer.png";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -185,16 +185,7 @@ const Register = () => {
       backgroundRepeat: "no-repeat", // Prevents tiling
     }}>
     <div className="container-max flex flex-col items-center justify-center  max-sm:p-4">
-      {/* <div className="">
-        <Image
-          src={logo}
-          alt="logo"
-          width={125}
-          height={125}
-          className="w-auto h-auto"
-          priority
-        />
-      </div> */}
+     
       <div className="bg-albasterInnerBg border border-burntSienna rounded-xl  p-6 md:p-8 shadow-[0_0_20px_rgba(0,0,0,0.15)]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -203,7 +194,7 @@ const Register = () => {
               name="userName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-darkbrownText text-md">Username</FormLabel>
+                  <FormLabel className="text-darkbrownText text-sm md:text-base">Username</FormLabel>
                   <FormControl>
                     <Input className="text-brownText" type="text" placeholder="Johndoe" {...field} />
                   </FormControl>
@@ -217,7 +208,7 @@ const Register = () => {
                       </span>
                     </p>
                   ) : (
-                    <p className={`${colorMap[usernameStatus.color]} text-sm`}>
+                    <p className={`${colorMap[usernameStatus.color]} text-xs`}>
                       {usernameStatus.message}
                     </p>
                   )}
@@ -229,7 +220,7 @@ const Register = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-darkbrownText text-md">Password</FormLabel>
+                  <FormLabel className="text-darkbrownText text-sm md:text-base">Password</FormLabel>
                   <FormControl>
                     <Input className="text-brownText"  type="password" placeholder="********" {...field} />
                   </FormControl>
@@ -237,28 +228,28 @@ const Register = () => {
                     <p
                       className={`text-${
                         passwordRequirements.minLength ? "green" : "red"
-                      }-500 text-sm`}
+                      }-500 text-xs`}
                     >
                       • Minimum 8 characters
                     </p>
                     <p
                       className={`text-${
                         passwordRequirements.hasNumber ? "green" : "red"
-                      }-500 text-sm`}
+                      }-500 text-xs`}
                     >
                       • Contains a number
                     </p>
                     <p
                       className={`text-${
                         passwordRequirements.hasUppercase ? "green" : "red"
-                      }-500 text-sm`}
+                      }-500 text-xs`}
                     >
                       • Contains uppercase letter
                     </p>
                     <p
                       className={`text-${
                         passwordRequirements.hasSpecialChar ? "green" : "red"
-                      }-500 text-sm`}
+                      }-500 text-xs`}
                     >
                       • Contains special character
                     </p>
@@ -272,7 +263,7 @@ const Register = () => {
               name="profileImage"
               render={() => (
                 <FormItem>
-                  <FormLabel className="text-darkbrownText text-md">Profile Image</FormLabel>
+                  <FormLabel className="text-darkbrownText text-sm md:text-base">Profile Image</FormLabel>
                   <FormControl>
                     <Input
                       type="file"
@@ -301,10 +292,10 @@ const Register = () => {
               {loading ? (
                 <Button disabled>
                   <Loader2 className="animate-spin text-burntSienna" />
-                   <span className="text-sm text-burntSienna">Registration in progress...</span>
+                   <span className="text-xs text-burntSienna">Registration in progress...</span>
                 </Button>
               ) : (
-                <Button variant="custom" type="submit">
+                <Button variant="custom" type="submit" className="text-sm md:text-base">
                   Register
                 </Button>
               )}

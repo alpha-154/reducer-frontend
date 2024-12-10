@@ -59,14 +59,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 
-
-
-
 interface AppSidebarProps {
   username: string;
   profileImage: string;
 }
-
 
 const mainItems = [
   {
@@ -120,8 +116,9 @@ const helperItems = [
   },
 ];
 
-export function AppSidebar({ username, profileImage}: AppSidebarProps) {
+export function AppSidebar({ username, profileImage }: AppSidebarProps) {
   const [openItem, setOpenItem] = React.useState<string | null>(null);
+
   const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
 
@@ -142,9 +139,9 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
       if (response.status === 200) {
         console.log("response status: ", response.status);
         // Clear the local storage
-      localStorage.clear(); // Removes all stored data
-      // Alternatively, remove specific keys:
-      // localStorage.removeItem("yourKey");
+        localStorage.clear(); // Removes all stored data
+        // Alternatively, remove specific keys:
+        // localStorage.removeItem("yourKey");
         cleanupSocketInstance();
         toast.success("logged out!");
         router.replace("/login");
@@ -162,7 +159,7 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
   };
 
   return (
-    <Sidebar className="border-r-2 border-burntSienna">
+    <Sidebar className="border-r-2 border-burntSienna" >
       <SidebarHeader className="bg-albasterInnerBg ">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -189,7 +186,6 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
                 align="start"
                 aria-describedby={undefined}
               >
-               
                 <DropdownMenuItem>
                   <span>Switch Organization</span>
                 </DropdownMenuItem>
@@ -205,9 +201,9 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
         <SidebarGroup>
           <SidebarGroupLabel>Get Started</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu >
+            <SidebarMenu>
               {mainItems.map((item) => (
-                <SidebarMenuItem key={item.title} >
+                <SidebarMenuItem key={item.title}>
                   {item.subItems ? (
                     <Collapsible
                       open={openItem === item.title}
@@ -228,8 +224,11 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
                       <CollapsibleContent className="pt-1">
                         <SidebarMenuSub className="flex min-w-[150px] flex-col gap-1">
                           {item.subItems.map((subItem) => (
-                            <SidebarMenuSubItem key={subItem.title} >
-                              <SidebarMenuSubButton asChild className="hover:bg-boneInnerBg">
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton
+                                asChild
+                                className="hover:bg-boneInnerBg"
+                              >
                                 <Link href={subItem.href}>
                                   <subItem.icon className="size-4" />
                                   <span>{subItem.title}</span>
@@ -241,7 +240,10 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
                       </CollapsibleContent>
                     </Collapsible>
                   ) : (
-                    <SidebarMenuButton asChild className=" hover:bg-boneInnerBg">
+                    <SidebarMenuButton
+                      asChild
+                      className=" hover:bg-boneInnerBg"
+                    >
                       <Link href={item.href}>
                         <item.icon className="size-4" />
                         <span>{item.title}</span>
@@ -275,21 +277,22 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
         <SidebarMenu className="bg-albasterInnerBg hover:bg-boneInnerBg/40 border border-boneInnerBg rounded-xl shadow-[0_0_20px_rgba(0,0,0,0.15)] mx-auto p-2 cursor-pointer">
           <SidebarMenuItem>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild >
+              <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="hover:bg-boneInnerBg/40">
                   <Avatar className="size-6">
                     <AvatarImage src={profileImage} alt="profileImage" />
                     <AvatarFallback>{username[0]}</AvatarFallback>
                   </Avatar>
-                  <span className="text-md text-brownText font-styrene-bold">{username}</span>
-                 
+                  <span className="text-md text-brownText font-styrene-bold">
+                    {username}
+                  </span>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 className="w-[--radix-dropdown-menu-trigger-width] bg-albasterInnerBg border-boneInnerBg shadow-[0_0_20px_rgba(0,0,0,0.15)]"
                 align="start"
                 side="top"
-                 aria-describedby={undefined}
+                aria-describedby={undefined}
               >
                 <DropdownMenuLabel className="flex items-center gap-2 p-2">
                   <Avatar className="size-8">
@@ -297,26 +300,28 @@ export function AppSidebar({ username, profileImage}: AppSidebarProps) {
                     <AvatarFallback>{username[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col space-y-0.5">
-                    <span className="text-sm font-medium text-darkbrownText">{username}</span>
-                   
+                    <span className="text-sm font-medium text-darkbrownText">
+                      {username}
+                    </span>
                   </div>
                 </DropdownMenuLabel>
-                
-                <DropdownMenuSeparator  className="bg-boneInnerBg"/>
+
+                <DropdownMenuSeparator className="bg-boneInnerBg" />
                 <DropdownMenuGroup>
                   <DropdownMenuItem className="hover:cursor-pointer">
                     <User2 className="mr-2 size-4 text-darkbrownText" />
                     <span className="text-darkbrownText">Account</span>
                   </DropdownMenuItem>
-                 
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator  className="bg-boneInnerBg"/>
+                <DropdownMenuSeparator className="bg-boneInnerBg" />
                 <DropdownMenuItem>
                   <Button
                     onClick={handleLogout}
                     variant="ghost"
                     disabled={isLoading}
-                    className={`w-full hover:bg-boneInnerBg ${isLoading ? "cursor-not-allowed" : ""} flex justify-start items-center`}
+                    className={`w-full hover:bg-boneInnerBg ${
+                      isLoading ? "cursor-not-allowed" : ""
+                    } flex justify-start items-center`}
                   >
                     <LogOut className=" size-4 text-darkbrownText -ml-4" />
                     <span className="text-sm md:text-md text-darkbrownText">

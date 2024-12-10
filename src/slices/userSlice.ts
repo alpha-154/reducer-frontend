@@ -102,6 +102,7 @@ const userSlice = createSlice({
         state.userId = action.payload.userId;
         state.username = action.payload.username;
         state.profileImage = action.payload.profileImage;
+        
       })
       .addCase(fetchUserThunk.rejected, (state, action) => {
         state.status = "failed";

@@ -18,23 +18,30 @@ import {
 interface UserCardProps {
   profileImage: string;
   username: string;
-  lastText: string;
+  otherUserId: string;
+  lastMessage: string;
+  totalUnseenMessages: number;
   date: Date;
+  status: "online" | "offline";
   privateMessageId: string;
-
   chatSortListNames: string[];
   currentUserUserName: string;
+  currentUserId: string;
   currentUserProfileImage: string;
 }
 
 const UserCard: React.FC<UserCardProps> = ({
   profileImage,
   username,
-  lastText,
+  otherUserId,
+  lastMessage,
+  totalUnseenMessages,
   date,
+  status,
   privateMessageId,
   chatSortListNames,
   currentUserUserName,
+  currentUserId,
   currentUserProfileImage,
 }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -43,6 +50,9 @@ const UserCard: React.FC<UserCardProps> = ({
   const toggleDrawer = () => {
     setDrawerOpen(!isDrawerOpen);
   };
+
+  // Extracting the last message from the lastMessageArray
+  // const lastText = lastMessageArray[lastMessageArray.length - 1];
 
   //Extracting the current window length value by using `useWindowWidth()` hook
   const windowWidth = useWindowWidth();
@@ -66,13 +76,13 @@ const UserCard: React.FC<UserCardProps> = ({
   // Determine max length for lastText based on window width
   const maxLength = windowWidth < 640 ? 25 : windowWidth < 1024 ? 40 : 60;
   let truncatedLastText;
-  if (lastText.startsWith("https://")) {
+  if (lastMessage?.startsWith("https://")) {
     truncatedLastText = "Voice Message 🎙️";
   } else {
     truncatedLastText =
-      lastText.length > maxLength
-        ? `${lastText.slice(0, maxLength)}...`
-        : lastText;
+      lastMessage.length > maxLength
+        ? `${lastMessage.slice(0, maxLength)}...`
+        : lastMessage; // Truncate lastTex
   }
 
   // >>>>>>>>>>>>>>>>>  End Connection With a Connected User >>>>>>>>>>>>> //
@@ -109,14 +119,14 @@ const UserCard: React.FC<UserCardProps> = ({
 
   return (
     <>
-      <div 
-      className="bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder rounded-xl flex items-center gap-1 transition duration-300  p-3  mb-2 cursor-pointer"
-      style={{
-        backgroundImage: `url(${userBgImg.src})`,
-        backgroundSize: "cover", // Ensures the image covers the area
-        backgroundPosition: "center", // Centers the image
-        backgroundRepeat: "no-repeat", // Prevents tiling
-      }}
+      <div
+        className="bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder rounded-xl flex items-center gap-1 transition duration-300  p-3  mb-2 cursor-pointer"
+        style={{
+          backgroundImage: `url(${userBgImg.src})`,
+          backgroundSize: "cover", // Ensures the image covers the area
+          backgroundPosition: "center", // Centers the image
+          backgroundRepeat: "no-repeat", // Prevents tiling
+        }}
       >
         <div
           onClick={toggleDrawer}
@@ -138,10 +148,23 @@ const UserCard: React.FC<UserCardProps> = ({
               <p className="text-xs md:text-sm text-brownText">
                 {truncatedLastText}
               </p>
+              {status === "online" && (
+                <div className="flex justify-start items-center gap-2">
+                  <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-green-500 opacity-75"></span>
+                  <span className="text-xs text-green-500">Online</span>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-1">
+            {totalUnseenMessages > 0 && (
+              <div className="flex justify-start items-center gap-2">
+                <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-red-600 opacity-75"></span>
+                <span className="text-xs text-red-600">New Message</span>
+              </div>
+            )}
+
             <span className="text-xs text-brownText max-w-[50px]">
               {formattedDate}
             </span>
@@ -170,6 +193,7 @@ const UserCard: React.FC<UserCardProps> = ({
             profileImage={profileImage}
             privateMessageId={privateMessageId}
             currentUserUserName={currentUserUserName}
+            currentUserId={currentUserId}
             currentUserProfileImage={currentUserProfileImage}
           />
         )}
