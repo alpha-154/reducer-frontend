@@ -39,7 +39,7 @@ const CustomDeleteDialog = ({
             <Button
               variant="destructive"
               size="sm"
-              className="w-full border border-red-950 rounded-xl text-sm"
+              className="w-full border border-red-950 rounded-xl text-xs"
             >
               {alertTriggerButtonText}
             </Button>

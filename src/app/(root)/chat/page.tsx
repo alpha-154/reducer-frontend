@@ -187,7 +187,7 @@ const Chat = () => {
   });
 
   return (
-    <div className="min-h-screen bg-albasterInnerBg  w-full flex flex-col items-center gap-5 md:gap-7  py-6 md:py-8">
+    <div className="min-h-screen bg-albasterInnerBg  w-full flex flex-col items-center gap-5 md:gap-7  py-6 md:py-8 md:px-8">
       {/* Header portion */}
       <h1 className="text-2xl md:text-3xl text-brownText font-styrene-a-thin-trial">
         Private Message
@@ -258,7 +258,7 @@ const Chat = () => {
       {/* Main portion */}
       <div className="min-h-fit flex flex-col items-center justify-between gap-10 -mt-6 md:-mt-10">
         {/* Users list */}
-        <div className="flex flex-col gap-2 min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center mt-10 md:mt-15">
+        <div className="flex flex-col gap-2 min-w-[330px] md:min-w-[450px] lg:min-w-[500px] items-center mt-10 md:mt-15">
           {status === "loading" ? (
             <CustomSkeleton numOfTimes={4} isChatSkeleton={false} />
           ) : (
@@ -302,7 +302,7 @@ const Chat = () => {
         {status === "loading" ? (
           <CustomSkeleton numOfTimes={1} isChatSkeleton={false} />
         ) : (
-          <div className="bg-burntSienna/15 hover:bg-burntSienna/30  mx-auto flex justify-between  min-w-[330px] md:min-w-[550px] lg:min-w-[650px] items-center mt-5 p-3 border border-burntSienna rounded-xl">
+          <div className="bg-burntSienna/15 hover:bg-burntSienna/30  mx-auto flex justify-between  min-w-[330px] md:min-w-[450px] lg:min-w-[500px] items-center mt-5 p-3 border border-burntSienna rounded-xl">
             <div>
               <CustomChatSortListDialog
                 triggerButtonText="Add a list"

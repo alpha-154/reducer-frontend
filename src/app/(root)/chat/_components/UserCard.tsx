@@ -144,14 +144,14 @@ const UserCard: React.FC<UserCardProps> = ({
               />
             </div>
             <div className="max-w-[150px] md:max-w-[300px]">
-              <h3 className="text-sm md:text-lg text-textBlue">{username}</h3>
-              <p className="text-xs md:text-sm text-brownText">
+              <h3 className="text-sm text-textBlue">{username}</h3>
+              <p className="text-xs  text-brownText">
                 {truncatedLastText}
               </p>
               {status === "online" && (
                 <div className="flex justify-start items-center gap-2">
                   <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-green-500 opacity-75"></span>
-                  <span className="text-xs text-green-500">Online</span>
+                  <span className="text-xs text-green-600">Online</span>
                 </div>
               )}
             </div>

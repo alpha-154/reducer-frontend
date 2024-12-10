@@ -44,7 +44,7 @@ const ToggleHeader: React.FC<ToggleHeaderProps> = ({
         className="bg-burntSienna/15 hover:bg-burntSienna/30 transition duration-300 flex items-center justify-between p-4 md:p-5 cursor-pointer border border-burntSienna rounded-xl"
         onClick={toggleOpen}
       >
-        <h2 className="text-md md:text-lg text-brownText">
+        <h2 className="text-md  text-brownText">
           {title}
         </h2>
         <div className="flex justify-center items-center gap-2">
