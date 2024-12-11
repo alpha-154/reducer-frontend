@@ -6,10 +6,12 @@ import {
   deleteSortList,
   endConnectionWithAnUser,
   addToChatSortList,
+  removeFromChatSortList
 } from "@/api";
 import { toast } from "sonner";
 import { handleAxiosError } from "@/helpers/axiosError";
 import { handleAxiosErrorWithToastMessage } from "@/helpers/axiosErrorWithToastMessage";
+import { list } from "postcss";
 
 interface SearchUser {
   userId: string;
@@ -32,6 +34,7 @@ interface members {
 interface ConnectedUserData {
   listName: string;
   members: members[];
+  isNewNotification: boolean;
 }
 
 interface InitialStateProps {
@@ -152,7 +155,7 @@ export const endConnectionWithAnUserThunk = createAsyncThunk(
   }
 );
 
-// Async thunk for end connection with a connected user
+// Async thunk for adding an user to chat sort list
 export const addUserToAChatSortListThunk = createAsyncThunk(
   "chat/addUserToAChatSortList",
   async (
@@ -175,10 +178,42 @@ export const addUserToAChatSortListThunk = createAsyncThunk(
   }
 );
 
+// Async thunk for removing an user from chat sort list
+export const removeUserFromAChatSortListThunk = createAsyncThunk(
+  "chat/removeUserFromAChatSortList",
+  async (
+    data: {
+      currentUserUserName: string;
+      deletedUserUserName: string;
+      listName: string;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await removeFromChatSortList(data);
+      if (response.status === 200) {
+        toast.success(response.data.message);
+        return response.data.removedUserData;
+      }
+    } catch (error) {
+      rejectWithValue(handleAxiosErrorWithToastMessage(error));
+    }
+  }
+);
+
 const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
+   updateToggleHeaderNotificationState: (state, action) => {
+     const { listName } = action.payload;
+     state.connectedUsers.forEach((list) => {
+       if (list.listName === listName) {
+         list.isNewNotification = false;
+       
+       }
+     });
+   },
     // This reducer is handling connected users online/offline status
     updateUserStatus: (state, action) => {
       const { userId, status } = action.payload;
@@ -270,6 +305,7 @@ const chatSlice = createSlice({
       state.connectedUsers.push({
         listName: action.payload.listName,
         members: [],
+        isNewNotification: false,
       });
     });
     builder.addCase(updateUsersSortListThunk.fulfilled, (state, action) => {
@@ -294,6 +330,7 @@ const chatSlice = createSlice({
         members: eachList.members.filter(
           (member) => member.userName !== action.payload
         ),
+        isNewNotification: eachList.isNewNotification,
       }));
     });
     builder.addCase(addUserToAChatSortListThunk.fulfilled, (state, action) => {
@@ -329,10 +366,31 @@ const chatSlice = createSlice({
         selectedList.members.push(userDocument);
       }
     });
+    builder.addCase(removeUserFromAChatSortListThunk.fulfilled, (state, action) => {
+      state.status = "succeeded";
+
+      const { listName, userName } = action.payload;
+      console.log("listName, userName -> removeUserFromAChatSortListThunk: ", listName, userName);
+
+      state.connectedUsers.forEach((list) => {
+        if (list.listName === listName) {
+          const foundUserIndex = list.members.findIndex(
+            (member) => member.userName === userName
+          )
+         if(foundUserIndex !== -1) {
+          list.members.splice(foundUserIndex, 1);
+         }
+         
+          
+        }
+      })
+     
+    });
   },
 });
 
 export const {
+  updateToggleHeaderNotificationState,
   updateUserStatus,
   updateUserCardForRealTimeMsg,
   updateUnseenMessages,
@@ -340,6 +398,33 @@ export const {
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import { NextResponse , NextRequest} from "next/server";
 // import { checkAuthentication } from "./actions/checkAuthentication";

@@ -34,6 +34,7 @@ interface CustomOptionsDropDownProps {
   commandEmptyText: string;
   addToList: (label: string) => void;
   endConnection: () => void;
+  removeUserFromList: () => void;
 }
 
 const OptionsDropDownMenu = ({
@@ -44,6 +45,7 @@ const OptionsDropDownMenu = ({
   commandEmptyText,
   addToList,
   endConnection,
+  removeUserFromList,
 }: CustomOptionsDropDownProps) => {
   const [open, setOpen] = React.useState(false);
 
@@ -96,12 +98,21 @@ const OptionsDropDownMenu = ({
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuSeparator />
+            <div className="flex flex-col justify-center items-start gap-1">
             <CustomDeleteDialog
               isAlertDialogTriggerContentIsButton={true}
               alertTriggerButtonText="End Connection"
               alertDialogDescription="Once you end connection with this user, you will no longer be able to see their messages."
               onDelete={endConnection}
             />
+            <CustomDeleteDialog
+              isAlertDialogTriggerContentIsButton={true}
+              alertTriggerButtonText="Remove From List"
+              alertDialogDescription="Are you sure you want to remove this user from this Sorted List?"
+              onDelete={removeUserFromList}
+            />         
+            </div>
+           
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

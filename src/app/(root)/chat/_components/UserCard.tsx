@@ -13,9 +13,11 @@ import OptionsDropDownMenu from "@/components/customComponents/CustomOptionsDrop
 import {
   addUserToAChatSortListThunk,
   endConnectionWithAnUserThunk,
+  removeUserFromAChatSortListThunk,
 } from "@/slices/chatSlice";
 
 interface UserCardProps {
+  title: string;
   profileImage: string;
   username: string;
   otherUserId: string;
@@ -31,6 +33,7 @@ interface UserCardProps {
 }
 
 const UserCard: React.FC<UserCardProps> = ({
+  title,
   profileImage,
   username,
   otherUserId,
@@ -108,11 +111,34 @@ const UserCard: React.FC<UserCardProps> = ({
       toast.error("Api endpoints data aren't found");
       return;
     }
+    else if(label === "All Connected Users" || label === title){
+      toast.error("User is already added to this list!");
+      return
+    }
     dispatch(
       addUserToAChatSortListThunk({
         currentUserUserName,
         addedUserUserName: username,
         listName: label,
+      })
+    );
+  };
+
+  // >>>>>>>>>>>>>>>>>  Remove a User From A Chat Sorting List >>>>>>>>>>>>> //
+  const handleRemoveUserFromAChatSortList = async () => {
+    if (!currentUserUserName || !username || !title) {
+      toast.error("Api endpoints data aren't found");
+      return;
+    }
+    else if(title === "All Connected Users"){
+      toast.error("User can't be removed from this default list!");
+      return
+    }
+    dispatch(
+      removeUserFromAChatSortListThunk({
+        currentUserUserName,
+        deletedUserUserName: username,
+        listName: title,
       })
     );
   };
@@ -150,7 +176,7 @@ const UserCard: React.FC<UserCardProps> = ({
               </p>
               {status === "online" && (
                 <div className="flex justify-start items-center gap-2">
-                  <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-green-500 opacity-75"></span>
+                  <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-green-600 opacity-75"></span>
                   <span className="text-xs text-green-600">Online</span>
                 </div>
               )}
@@ -161,7 +187,7 @@ const UserCard: React.FC<UserCardProps> = ({
             {totalUnseenMessages > 0 && (
               <div className="flex justify-start items-center gap-2">
                 <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-red-600 opacity-75"></span>
-                <span className="text-xs text-red-600">New Message</span>
+                <span className="text-xs text-red-600">Message</span>
               </div>
             )}
 
@@ -179,6 +205,7 @@ const UserCard: React.FC<UserCardProps> = ({
             commandEmptyText="No Lists Found"
             addToList={handleAddUserToAChatSortList}
             endConnection={handleEndConnection}
+            removeUserFromList={handleRemoveUserFromAChatSortList}
           />
         </div>
       </div>

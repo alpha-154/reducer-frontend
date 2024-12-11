@@ -171,7 +171,6 @@ const sendVoiceMessage = ({ formData } : { formData: FormData }) => {
 
 
 // >>>>>>>>>>>>>> handling users sorting list component >>>>>>>>//
-
 const createSortList = ({currentUserUserName, listName} : { currentUserUserName: string; listName: string}) => {
   return apiClient.post("/api/user/create-user-sorting-list", {
     currentUserUserName,
@@ -214,6 +213,15 @@ const addToChatSortList = ({currentUserUserName, addedUserUserName, listName} : 
      addedUserUserName,
      listName
    })
+}
+
+
+const removeFromChatSortList = ({currentUserUserName, deletedUserUserName, listName} : { currentUserUserName: string; deletedUserUserName: string; listName: string }) => {
+  return apiClient.put("/api/user/remove-user-from-chat-sort-list", {
+    currentUserUserName,
+    deletedUserUserName,
+    listName
+  })
 }
 
 // >>>>>>>>>>>        Chat APIs Ends      >>>>>>>>>>>>>>>>>> ///
@@ -344,6 +352,7 @@ export {
   deleteSortList,
   endConnectionWithAnUser,
   addToChatSortList,
+  removeFromChatSortList,
   fetchUserNotifications,
   acceptPrivateMessageRequest,
   declinePrivateMessageRequest,

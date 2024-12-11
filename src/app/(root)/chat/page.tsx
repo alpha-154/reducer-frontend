@@ -274,10 +274,12 @@ const Chat = () => {
                     key={index}
                     title={user.listName}
                     currentUserUserName={currentUserUserName}
+                    isNewNotification={user.isNewNotification}
                   >
                     {user.members.map((member, index) => (
                       <UserCard
                         key={index}
+                        title={user.listName}
                         profileImage={member.profileImage}
                         username={member.userName}
                         otherUserId={member.userId}
