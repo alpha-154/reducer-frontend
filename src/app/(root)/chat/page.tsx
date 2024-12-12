@@ -187,14 +187,14 @@ const Chat = () => {
   });
 
   return (
-    <div className="min-h-screen bg-albasterInnerBg  w-full flex flex-col items-center gap-5 md:gap-7  py-6 md:py-8 md:px-8">
+    <div className="h-fit bg-albasterInnerBg  w-full flex flex-col items-center gap-5 md:gap-7  py-2  px-5">
       {/* Header portion */}
       <h1 className="text-2xl md:text-3xl text-brownText font-styrene-a-thin-trial">
         Private Message
       </h1>
       {/* User search section */}
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 mt-2">
         <div className="flex items-center gap-2">
           <Input
             value={query}
@@ -256,9 +256,9 @@ const Chat = () => {
       </div>
 
       {/* Main portion */}
-      <div className="min-h-fit flex flex-col items-center justify-between gap-10 -mt-6 md:-mt-10">
+      <div className="h-fit flex flex-col items-center justify-between gap-10 -mt-6 md:-mt-8">
         {/* Users list */}
-        <div className="flex flex-col gap-2 min-w-[330px] md:min-w-[450px] lg:min-w-[500px] items-center mt-10 md:mt-15">
+        <div className="flex flex-col gap-2 min-w-[300px] md:min-w-[450px] lg:min-w-[500px] items-center mt-10 md:mt-15">
           {status === "loading" ? (
             <CustomSkeleton numOfTimes={4} isChatSkeleton={false} />
           ) : (
@@ -304,7 +304,7 @@ const Chat = () => {
         {status === "loading" ? (
           <CustomSkeleton numOfTimes={1} isChatSkeleton={false} />
         ) : (
-          <div className="bg-burntSienna/15 hover:bg-burntSienna/30  mx-auto flex justify-between  min-w-[330px] md:min-w-[450px] lg:min-w-[500px] items-center mt-5 p-3 border border-burntSienna rounded-xl">
+          <div className="bg-burntSienna/15 hover:bg-burntSienna/30  mx-auto flex justify-between  min-w-[300px] md:min-w-[450px] lg:min-w-[500px] items-center mt-5 p-3 border border-burntSienna rounded-xl">
             <div>
               <CustomChatSortListDialog
                 triggerButtonText="Add a list"

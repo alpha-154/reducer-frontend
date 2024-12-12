@@ -100,10 +100,10 @@ const CustomChatSortListDialog = ({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-albasterInnerBg border border-boneInnerBg rounded-xl">
         <DialogHeader>
-          <DialogTitle className="text-left text-brownText text-md">
+          <DialogTitle className="text-left text-brownText text-sm md:text-md">
             {dialogTitleText}
           </DialogTitle>
-          <DialogDescription className="text-left text-brownText text-md">
+          <DialogDescription className="text-left text-brownText text-xs md:text-sm">
             {dialogDescriptionText}
           </DialogDescription>
         </DialogHeader>
@@ -113,7 +113,7 @@ const CustomChatSortListDialog = ({
             value={listName}
             onChange={(e) => setListName(e.target.value)}
             placeholder="Gym Buddies"
-            className="text-darkbrownText col-span-3 placeholder:text-burntSienna"
+            className="text-darkbrownText col-span-3 placeholder:text-burntSienna placeholder:text-xs text-sm"
           />
         </div>
         <DialogFooter>
@@ -123,6 +123,7 @@ const CustomChatSortListDialog = ({
                 onClick={handleCreateSortingList}
                 variant="custom"
                 type="submit"
+                className="text-sm md:text-md"
               >
                 {saveButtonText}
               </Button>
@@ -131,6 +132,7 @@ const CustomChatSortListDialog = ({
                 onClick={handleUpdateSortingList}
                 variant="custom"
                 type="submit"
+                className="text-sm md:text-md"
               >
                 {saveButtonText}
               </Button>

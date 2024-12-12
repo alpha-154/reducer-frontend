@@ -58,14 +58,14 @@ const CustomDeleteDialog = ({
         </AlertDialogTrigger>
         <AlertDialogContent className="bg-albasterInnerBg border border-boneInnerBg rounded-xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-brownText text-left">Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription className="text-brownText text-left">
+            <AlertDialogTitle className="text-brownText text-left text-sm md:text-md">Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription className="text-brownText text-left text-xs md:text-sm">
               {alertDialogDescription}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="bg-boneInnerBg/60 hover:bg-boneInnerBg text-brownText text-md font-bold">Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-red-800 hover:bg-red-900 text-white text-md font-bold" onClick={onDelete}>Continue</AlertDialogAction>
+            <AlertDialogCancel className="bg-boneInnerBg/60 hover:bg-boneInnerBg text-brownText text-sm md:text-md font-bold">Cancel</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-800 hover:bg-red-900 text-white text-md font-bold text-sm md:text-md" onClick={onDelete}>Continue</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

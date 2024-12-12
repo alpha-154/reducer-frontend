@@ -58,9 +58,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className="px-4 md:px-6 lg:px-8">
       <AppSidebar username={username} profileImage={profileImage} />
-      <main className="flex-1 bg-albasterInnerBg border border-burntSienna rounded-xl m-5 md:m-10 shadow-[0_0_20px_rgba(0,0,0,0.20)]">
+      <main className="flex-1 bg-albasterInnerBg border border-burntSienna rounded-xl m-5 shadow-[0_0_20px_rgba(0,0,0,0.20)] mx-auto">
         <SidebarTrigger className="ml-2 mt-2 md:ml-5 md:mt-5" />
          <ProtectedRoute>{children}</ProtectedRoute>
       </main>
