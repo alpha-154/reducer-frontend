@@ -117,7 +117,7 @@ const Register = () => {
         debouncedCheck.cancel();
       };
     }
-  }, [username, form]);
+  }, [username]);
   
   
    

@@ -149,136 +149,132 @@ export default function CustomSheet() {
       </SheetTrigger>
       <SheetContent className="bg-albasterInnerBg overflow-y-auto">
         <SheetHeader>
-          <SheetTitle className="text-left text-brownText">
+          <SheetTitle className="text-left text-brownText text-base">
             Profile Settings
           </SheetTitle>
-          <SheetDescription className="text-left text-brownText">
+          <SheetDescription className="text-left text-brownText text-xs">
             Select the checkbox next to the setting you want to update.
           </SheetDescription>
         </SheetHeader>
         <div className="mt-6 space-y-8">
-          <div className="space-y-4">
-            <div className="flex flex-col gap-4 mb-10">
-              <div className="flex flex-col items-center">
-                <Image
-                  src={preview ? preview : profileImage}
-                  alt="Profile"
-                  className="rounded-full w-auto"
-                  width={100}
-                  height={100}
-                />
-              </div>
-              <div className="flex flex-col items-start gap-4">
-                <div className="flex justify-start space-x-2">
-                  <Checkbox
-                    id="changeImage"
-                    checked={changeImage}
-                    className="text-brownText border border-burntSienna"
-                    onCheckedChange={(checked) =>
-                      setChangeImage(checked as boolean)
-                    }
-                  />
-                  <Label
-                    htmlFor="changeImage"
-                    className="text-md md:text-md text-brownText"
-                  >
-                    Change Profile Image
-                  </Label>
-                </div>
-                <div>
-                  {changeImage && (
-                    <div className="space-y-2">
-                      <Input
-                        type="file"
-                        ref={fileInputRef}
-                        accept="image/*"
-                        className="text-darkbrownText placeholder:text-darkbrownText"
-                        onChange={handleFileChange}
-                      />
-                      <Button
-                        variant="custom"
-                        className="text-sm md:text-md"
-                        disabled={!updateImageUrl || imageUploadLoading}
-                        onClick={onImageUpload}
-                      >
-                        {imageUploadLoading ? "Updating..." : "Update"}
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-start items-center space-x-2 ">
-              <h1 className="text-md text-brownText">Username:</h1>
-              <h3 className="text-md text-darkbrownText font-styrene-bold">
-                {username}
-              </h3>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="changePassword"
-                checked={changePassword}
-                className="text-brownText border border-burntSienna"
-                onCheckedChange={(checked) =>
-                  setChangePassword(checked as boolean)
-                }
+          <div className="flex flex-col gap-4">
+            {/* Image Div*/}
+            <div className="max-h-[80px] max-w-[80px] flex items-center justify-center mx-auto">
+              <Image
+                src={preview ? preview : profileImage}
+                alt="Profile"
+                className="rounded-full w-auto"
+                width={70}
+                height={70}
               />
-              <Label
-                htmlFor="changePassword"
-                className="text-md md:text-md text-brownText"
-              >
-                Change Password
-              </Label>
             </div>
-
-            {changePassword && (
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="currentPassword"
-                    className="text-sm md:text-md text-brownText"
-                  >
-                    Current Password
-                  </Label>
-                  <Input
-                    id="currentPassword"
-                    type="password"
-                    value={currentPassword}
-                    className="text-darkbrownText"
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="newPassword"
-                    className="text-sm md:text-md text-brownText"
-                  >
-                    New Password
-                  </Label>
-                  <Input
-                    id="newPassword"
-                    type="password"
-                    value={newPassword}
-                    className="text-darkbrownText"
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    disabled={!currentPassword}
-                  />
-                </div>
-
-                <Button
-                  className="w-full text-sm md:text-md"
-                  variant="custom"
-                  onClick={handlePasswordChange}
-                  disabled={!currentPassword || !newPassword}
+            {/* Username Div */}
+            <div className="flex justify-start items-center space-x-2 mt-2">
+              <h1 className="text-md text-brownText">Username:</h1>
+              <h3 className="text-md text-burntSiennaDeep">{username}</h3>
+            </div>
+            {/* Change Image Input Field */}
+            <div className="flex flex-col items-start gap-4">
+              <div className="flex justify-start space-x-2">
+                <Checkbox
+                  id="changeImage"
+                  checked={changeImage}
+                  className="text-brownText border border-burntSienna"
+                  onCheckedChange={(checked) =>
+                    setChangeImage(checked as boolean)
+                  }
+                />
+                <Label htmlFor="changeImage" className="text-sm text-brownText">
+                  Change Profile Image
+                </Label>
+              </div>
+              <div className={`${changeImage ? "mb-4" : "mb-0"}`}>
+                {changeImage && (
+                  <div className="space-y-2">
+                    <Input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      className="text-darkbrownText placeholder:text-darkbrownText text-xs"
+                      onChange={handleFileChange}
+                    />
+                    <Button
+                      variant="custom"
+                      className="text-xs"
+                      disabled={!updateImageUrl || imageUploadLoading}
+                      onClick={onImageUpload}
+                    >
+                      {imageUploadLoading ? "Updating..." : "Update"}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Change Password Input Field */}
+            <div className="space-y-4 -mt-3">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="changePassword"
+                  checked={changePassword}
+                  className="text-brownText border border-burntSienna text-xs"
+                  onCheckedChange={(checked) =>
+                    setChangePassword(checked as boolean)
+                  }
+                />
+                <Label
+                  htmlFor="changePassword"
+                  className="text-md md:text-md text-brownText text-sm"
                 >
                   Change Password
-                </Button>
+                </Label>
               </div>
-            )}
+
+              {changePassword && (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="currentPassword"
+                      className="text-xs md:text-md text-brownText"
+                    >
+                      Current Password
+                    </Label>
+                    <Input
+                      id="currentPassword"
+                      type="password"
+                      value={currentPassword}
+                      className="text-darkbrownText"
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="newPassword"
+                      className="text-xs md:text-md text-brownText"
+                    >
+                      New Password
+                    </Label>
+                    <Input
+                      id="newPassword"
+                      type="password"
+                      value={newPassword}
+                      className="text-darkbrownText"
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      disabled={!currentPassword}
+                    />
+                  </div>
+
+                  <Button
+                    className="w-fit text-xs"
+                    variant="custom"
+                    onClick={handlePasswordChange}
+                    disabled={!currentPassword || !newPassword}
+                  >
+                    Change Password
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </SheetContent>
