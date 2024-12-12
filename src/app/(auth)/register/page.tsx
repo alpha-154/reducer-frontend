@@ -306,7 +306,7 @@ const Register = () => {
       <h1 className="text-md md:text-lg text-nightText mt-3 md:mt-4 ">
         Already have an account?{" "}
         <Link href="/login">
-        <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-md md:text-lg">Login</span>
+        <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-sm md:text-base">Login</span>
         </Link>{" "}
       </h1>
     </div>
