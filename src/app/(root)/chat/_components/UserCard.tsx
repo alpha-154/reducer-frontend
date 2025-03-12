@@ -110,10 +110,9 @@ const UserCard: React.FC<UserCardProps> = ({
     if (!currentUserUserName || !username || !label) {
       toast.error("Api endpoints data aren't found");
       return;
-    }
-    else if(label === "All Connected Users" || label === title){
+    } else if (label === "All Connected Users" || label === title) {
       toast.error("User is already added to this list!");
-      return
+      return;
     }
     dispatch(
       addUserToAChatSortListThunk({
@@ -129,10 +128,9 @@ const UserCard: React.FC<UserCardProps> = ({
     if (!currentUserUserName || !username || !title) {
       toast.error("Api endpoints data aren't found");
       return;
-    }
-    else if(title === "All Connected Users"){
+    } else if (title === "All Connected Users") {
       toast.error("User can't be removed from this default list!");
-      return
+      return;
     }
     dispatch(
       removeUserFromAChatSortListThunk({
@@ -146,7 +144,7 @@ const UserCard: React.FC<UserCardProps> = ({
   return (
     <>
       <div
-        className="bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder rounded-xl flex items-center gap-1 transition duration-300  p-3  mb-2 cursor-pointer"
+        className="relative bg-cardBlueBg/80 hover:bg-cardBlueBorder/20 border border-cardBlueBorder rounded-xl flex items-center gap-1 transition duration-300  p-3  mb-2 cursor-pointer"
         style={{
           backgroundImage: `url(${userBgImg.src})`,
           backgroundSize: "cover", // Ensures the image covers the area
@@ -158,9 +156,24 @@ const UserCard: React.FC<UserCardProps> = ({
           onClick={toggleDrawer}
           className="basis-[95%] w-full flex justify-between items-center"
         >
+          {/* Unseen message indicator */}
+          {totalUnseenMessages > 0 && (
+            <div className="absolute top-0 right-0 flex justify-start items-center gap-2">
+              <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-red-600 opacity-75"></span>
+            </div>
+          )}
+
           {/* User details */}
           <div className="flex items-center gap-3 w-full">
-            <div className="w-10 h-10 flex justify-center items-center border border-cardBlueBorder rounded-full">
+            <div
+              className={`${
+                status === "online" ? "animate-pulse" : ""
+              } w-10 h-10 flex justify-center items-center border border-cardBlueBorder ${
+                status === "online"
+                  ? "border-green-500"
+                  : "border-cardBlueBorder"
+              } rounded-full`}
+            >
               <Image
                 src={profileImage}
                 width={40}
@@ -171,42 +184,26 @@ const UserCard: React.FC<UserCardProps> = ({
             </div>
             <div className="max-w-[150px] md:max-w-[300px]">
               <h3 className="text-sm text-textBlue">{username}</h3>
-              <p className="text-xs  text-brownText">
-                {truncatedLastText}
-              </p>
-              {status === "online" && (
-                <div className="flex justify-start items-center gap-2">
-                  <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-green-600 opacity-75"></span>
-                  <span className="text-xs text-green-600">Online</span>
-                </div>
-              )}
+              <p className="text-xs  text-brownText">{truncatedLastText}</p>
             </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-1">
-            {totalUnseenMessages > 0 && (
-              <div className="flex justify-start items-center gap-2">
-                <span className="animate-ping inline-flex h-[10px] w-[10px] rounded-full bg-red-600 opacity-75"></span>
-                <span className="text-xs text-red-600">Message</span>
-              </div>
-            )}
-
-            <span className="text-xs text-brownText max-w-[50px]">
-              {formattedDate}
-            </span>
           </div>
         </div>
         <div className="basis-[5%]">
-          <OptionsDropDownMenu
-            labels={chatSortListNames}
-            actions="Actions"
-            dropDownMenuSubtriggerText="Add to List"
-            commandInputPlaceholderText="Search a List..."
-            commandEmptyText="No Lists Found"
-            addToList={handleAddUserToAChatSortList}
-            endConnection={handleEndConnection}
-            removeUserFromList={handleRemoveUserFromAChatSortList}
-          />
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-brownText max-w-[50px]">
+              {formattedDate}
+            </span>
+            <OptionsDropDownMenu
+              labels={chatSortListNames}
+              actions="Actions"
+              dropDownMenuSubtriggerText="Add to List"
+              commandInputPlaceholderText="Search a List..."
+              commandEmptyText="No Lists Found"
+              addToList={handleAddUserToAChatSortList}
+              endConnection={handleEndConnection}
+              removeUserFromList={handleRemoveUserFromAChatSortList}
+            />
+          </div>
         </div>
       </div>
 

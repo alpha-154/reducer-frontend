@@ -30,6 +30,7 @@ const config: Config = {
   			},
   			albasterbg: '#F1F0E8',
   			albasterInnerBg: '#EBE9DF',
+			albasterInnerBgDarker: '#D6D4C6',
   			boneInnerBg: '#DED8C4',
   			burntSienna: '#D87D5D',
   			burntSiennaDeep: '#E2714F',

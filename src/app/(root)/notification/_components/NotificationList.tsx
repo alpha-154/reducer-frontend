@@ -121,7 +121,7 @@ const Notification: React.FC<NotificationProps> = ({
 
  
   return (
-    <div className={`${isSeen ? "bg-burntSienna/25 hover:bg-burntSienna/40 border-burntSienna text-darkbrownText" : "bg-red-500/40 hover:bg-red-500/50 border-red-500 text-slate-100"}  flex items-center justify-between max-sm:gap-3  border  rounded-xl p-3 md:p-4 transition duration-300`}>
+    <div className={`${isSeen ? "bg-burntSienna/25 hover:bg-burntSienna/35 border-burntSienna text-darkbrownText" : "bg-burntSienna/40 hover:bg-burntSienna/50 border-burntSienna "}  flex items-center justify-between max-sm:gap-3  border  rounded-xl p-3 md:p-4 transition duration-300`}>
       <div className="cursor-pointer">
         <Image
           src={profileImage}
@@ -133,7 +133,7 @@ const Notification: React.FC<NotificationProps> = ({
       </div>
       <div className="flex flex-col items-center justify-center gap-2">
         <div className="">
-          <p className="text-sm md:text-md">{message}</p>
+          <p className="text-sm md:text-md text-darkbrownText">{message}</p>
         </div>
 
         <div>
@@ -173,7 +173,7 @@ const Notification: React.FC<NotificationProps> = ({
       </div>
 
       <div className="flex flex-col justify-between items-start sm:items-center gap-1 md:gap-2">
-        <p className="text-xs">{date}</p>
+        <p className="text-xs text-darkbrownText">{date}</p>
         <CustomDeleteDialog
           isAlertDialogTriggerContentIsButton={false}
           alertDialogDescription="Are you sure you want to delete this notification?"

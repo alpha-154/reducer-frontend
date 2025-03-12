@@ -100,9 +100,9 @@ const mainItems = [
 
 const helperItems = [
   {
-    title: "Todo",
+    title: "Task Manager",
     icon: ListTodo,
-    href: "/in-process",
+    href: "/task-manager",
   },
   {
     title: "Link Storage",

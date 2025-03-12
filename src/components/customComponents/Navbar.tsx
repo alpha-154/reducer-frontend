@@ -1,16 +1,23 @@
-
-
-
-
 "use client";
-import React, { useState } from 'react';
-import { ChevronDown, Mail, Users, LogOut, Settings, User, MessageCircle, ListTodo, Database, ChartSpline } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import React, { useState } from "react";
+import {
+  ChevronDown,
+  Mail,
+  Users,
+  LogOut,
+  Settings,
+  User,
+  MessageCircle,
+  ListTodo,
+  Database,
+  ChartSpline,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { logoutUser } from "@/api";
 import { cleanupSocketInstance } from "@/lib/socket.config";
-import { toast } from 'sonner';
-import type { AxiosError } from 'axios';
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 interface NavLinkProps {
   title: string;
@@ -21,37 +28,44 @@ interface NavLinkProps {
   children?: React.ReactNode;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ 
-  title, 
-  isOpen, 
-  onMouseEnter, 
+const NavLink: React.FC<NavLinkProps> = ({
+  title,
+  isOpen,
+  onMouseEnter,
   onMouseLeave,
-  onClick, 
-  children 
+  onClick,
+  children,
 }) => {
   return (
-    <div 
+    <div
       className="relative group"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <button 
+      <button
         onClick={onClick}
         className="flex items-center px-4 py-2  text-brownText hover:text-burntSiennaDeep transition-all duration-300"
       >
         <span className="mr-1 text-md">{title}</span>
-        <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+        <span
+          className={`transform transition-transform duration-300 ${
+            isOpen ? "rotate-180" : "rotate-0"
+          }`}
+        >
           <ChevronDown size={16} />
         </span>
       </button>
-      <div 
+      <div
         className={`
-          absolute ${title === 'Profile' ? 'max-sm:-translate-x-[50%]' : ''} md:-translate-x-1/2 top-full w-52 py-1.5 
+          absolute ${
+            title === "Profile" ? "max-sm:-translate-x-[50%]" : ""
+          } md:-translate-x-1/2 top-full w-52 py-1.5 
           bg-albasterInnerBg border border-burntSienna rounded-xl shadow-xl 
           transform transition-all duration-300 ease-out z-50
-          ${isOpen 
-            ? 'opacity-100 translate-y-0 visible' 
-            : 'opacity-0 -translate-y-2 invisible'
+          ${
+            isOpen
+              ? "opacity-100 translate-y-0 visible"
+              : "opacity-0 -translate-y-2 invisible"
           }
           md:w-64 md:left-0 md:translate-x-0
           lg:w-72 lg:left-0 lg:translate-x-0
@@ -115,62 +129,62 @@ const Navbar = () => {
 
   const menuItems = {
     getting_started: [
-      { 
-        icon: Mail, 
-        label: 'Mail', 
-        desc: 'Re-usable components built using Radix UI and Tailwind CSS',
-        href: '/mail' 
+      {
+        icon: Mail,
+        label: "Mail",
+        desc: "Re-usable components built using Radix UI and Tailwind CSS",
+        href: "/mail",
       },
-      { 
-        icon: MessageCircle, 
-        label: 'Chat', 
-        desc: 'Re-usable components built using Radix UI and Tailwind CSS',
-        href: '/chat' 
+      {
+        icon: MessageCircle,
+        label: "Chat",
+        desc: "Re-usable components built using Radix UI and Tailwind CSS",
+        href: "/chat",
       },
-      { 
-        icon: Users, 
-        label: 'Group', 
-        desc: 'How to install dependencies and structure your app',
-        href: '/group' 
+      {
+        icon: Users,
+        label: "Group",
+        desc: "How to install dependencies and structure your app",
+        href: "/group",
       },
     ],
     helpers: [
       {
-        icon: ListTodo,  
-        label: 'Todo App', 
-        desc: 'A modal dialog that interrupts the user with important content',
-        href: '/todo' 
-      },
-      { 
-        icon: Database, 
-        label: 'Saved Links', 
-        desc: 'Popup that displays information on keyboard focus',
-        href: '/tooltip' 
+        icon: ListTodo,
+        label: "Todo App",
+        desc: "A modal dialog that interrupts the user with important content",
+        href: "/todo",
       },
       {
-        icon: ChartSpline,  
-        label: 'Analytics', 
-        desc: 'Displays completion progress of a task as a progress bar',
-        href: '/analytics' 
+        icon: Database,
+        label: "Saved Links",
+        desc: "Popup that displays information on keyboard focus",
+        href: "/savedlinks",
+      },
+      {
+        icon: ChartSpline,
+        label: "Analytics",
+        desc: "Displays completion progress of a task as a progress bar",
+        href: "/analytics",
       },
     ],
     profile: [
-      { 
-        icon: User, 
-        label: 'Profile Settings', 
-        desc: 'Manage your account preferences',
-        href: '/profile/settings' 
+      {
+        icon: User,
+        label: "Profile Settings",
+        desc: "Manage your account preferences",
+        href: "/profile/settings",
       },
-      { 
-        icon: Settings, 
-        label: 'App Settings', 
-        desc: 'Configure application settings',
-        href: '/settings' 
+      {
+        icon: Settings,
+        label: "App Settings",
+        desc: "Configure application settings",
+        href: "/settings",
       },
-      { 
-        icon: LogOut, 
-        label: 'Logout', 
-        desc: 'Sign out of your account',
+      {
+        icon: LogOut,
+        label: "Logout",
+        desc: "Sign out of your account",
         onClick: handleLogout,
       },
     ],
@@ -180,9 +194,9 @@ const Navbar = () => {
     <div className="py-1">
       {menuItems[menuKey].map((item, index) => {
         // If the item has an onClick handler (like logout), use a button instead of a Link
-        if ('onClick' in item) {
+        if ("onClick" in item) {
           return (
-            <button 
+            <button
               key={index}
               className="w-full block"
               onClick={() => {
@@ -194,9 +208,7 @@ const Navbar = () => {
               <div className="px-4 py-2.5 hover:bg-boneInnerBg transition-all duration-200 group">
                 <div className="flex items-center">
                   {item.icon && (
-                    <item.icon 
-                      className="w-5 h-5 mr-2 text-gray-400 group-hover:text-burntSienna  transition-colors duration-200" 
-                    />
+                    <item.icon className="w-5 h-5 mr-2 text-gray-400 group-hover:text-burntSienna  transition-colors duration-200" />
                   )}
                   <div>
                     <div className="text-left text-sm font-medium text-brownText group-hover:text-burntSienna  transition-colors duration-200">
@@ -214,8 +226,8 @@ const Navbar = () => {
 
         // Regular link items
         return (
-          <Link 
-            href={item.href} 
+          <Link
+            href={item.href}
             key={index}
             className="block"
             onClick={handleMenuItemClick}
@@ -223,9 +235,7 @@ const Navbar = () => {
             <div className="px-4 py-2.5 hover:bg-boneInnerBg transition-all duration-200 group">
               <div className="flex items-center">
                 {item.icon && (
-                  <item.icon 
-                    className="w-5 h-5 mr-2 text-gray-400 group-hover:text-burntSienna  transition-colors duration-200" 
-                  />
+                  <item.icon className="w-5 h-5 mr-2 text-gray-400 group-hover:text-burntSienna  transition-colors duration-200" />
                 )}
                 <div>
                   <div className="text-sm font-medium text-brownText group-hover:text-burntSienna transition-colors duration-200">
@@ -250,32 +260,32 @@ const Navbar = () => {
           <div className="flex items-center space-x-3 md:space-x-4 lg:space-x-6 relative">
             <NavLink
               title="Start"
-              isOpen={activeMenu === 'getting_started'}
-              onMouseEnter={() => handleMouseEnter('getting_started')}
+              isOpen={activeMenu === "getting_started"}
+              onMouseEnter={() => handleMouseEnter("getting_started")}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleClick('getting_started')}
+              onClick={() => handleClick("getting_started")}
             >
-              {renderMenuContent('getting_started')}
+              {renderMenuContent("getting_started")}
             </NavLink>
 
             <NavLink
               title="Helpers"
-              isOpen={activeMenu === 'helpers'}
-              onMouseEnter={() => handleMouseEnter('helpers')}
+              isOpen={activeMenu === "helpers"}
+              onMouseEnter={() => handleMouseEnter("helpers")}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleClick('helpers')}
+              onClick={() => handleClick("helpers")}
             >
-              {renderMenuContent('helpers')}
+              {renderMenuContent("helpers")}
             </NavLink>
 
             <NavLink
               title="Profile"
-              isOpen={activeMenu === 'profile'}
-              onMouseEnter={() => handleMouseEnter('profile')}
+              isOpen={activeMenu === "profile"}
+              onMouseEnter={() => handleMouseEnter("profile")}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleClick('profile')}
+              onClick={() => handleClick("profile")}
             >
-              {renderMenuContent('profile')}
+              {renderMenuContent("profile")}
             </NavLink>
           </div>
         </div>

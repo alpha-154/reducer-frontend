@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-
+import { Task } from "@/app/(root)/task-manager/types";
 // Creating an Axios instance for API requests
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL ,
@@ -333,6 +333,51 @@ const isNotificationSeen = ({ currentUserUserName }: { currentUserUserName: stri
 //   >>>>>>>>>>>>>>>>  Notification APIs Ends >>>>>>>>>>>>>>> //
 
 
+//  >>>>>>>>>>>>>>>>  Daily Task Manager APIs Starts >>>>>>>>>>>>>>> //
+
+const getAllDailyTasks = (userId: string) => {
+  return apiClient.get(
+    `/api/daily-task-manager/get-all-daily-tasks/${userId}`
+  );
+}
+
+const createDailyTask = ({userId, taskData} : {userId: string; taskData: Task}) => {
+  return apiClient.post(
+    `/api/daily-task-manager/create-daily-task`,
+    {
+      userId,
+      taskData
+    }
+  );
+}
+
+const deleteDailyTask = ({userId, taskId} : {userId: string; taskId: string}) => {
+  return apiClient.delete(
+    `/api/daily-task-manager/delete-daily-task`,
+    {
+      data: {
+        userId,
+        taskId
+      }
+    }
+  );
+}
+
+const completeDailyTask = ({userId, taskId} : {userId: string; taskId: string}) => {
+  return apiClient.patch(
+    `/api/daily-task-manager/completed-daily-task`,
+    {
+      userId,
+      taskId
+    }
+  );
+}
+
+
+// >>>>>>>>>>>>>>>>  Daily Task Manager APIs Ends >>>>>>>>>>>>>>> //
+
+
+
 export {
   registerUser,
   checkUsername,
@@ -360,5 +405,9 @@ export {
   declineGroupJoinReqeust,
   deleteNotification,
   //isNotificationRead,
-  isNotificationSeen 
+  isNotificationSeen,
+  getAllDailyTasks,
+  createDailyTask,
+  deleteDailyTask,
+  completeDailyTask 
 };

@@ -148,10 +148,10 @@ const Login = () => {
                 {loading ? (
                   <Button disabled>
                     <Loader2 className="animate-spin  text-burntSienna" />
-                    <span className="text-xs text-burntSienna"></span>Log In...
+                    <span className="text-xs text-burntSienna">Log In...</span>
                   </Button>
                 ) : (
-                  <Button variant="custom" type="submit" className="text-sm md:text-base">
+                  <Button variant="custom" type="submit" className="text-sm">
                     Login
                   </Button>
                 )}
@@ -162,7 +162,7 @@ const Login = () => {
         <h1 className="text-md md:text-lg text-nightText mt-4 md:mt-5">
           Don&apos;t have an account?{" "}
           <Link href="/register">
-            <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-sm md:text-base">
+            <span className="text-burntSienna hover:text-burntSiennaDeep font-styrene-bold text-sm">
               Register
             </span>
           </Link>{" "}
